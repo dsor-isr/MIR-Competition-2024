@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/joaolehodey/glassy_ws/install/px4_ros_com/local/lib/python3.10/dist-packages",
+        "/home/joaolehodey/glassy_ws/install/px4_msgs/local/lib/python3.10/dist-packages",
+        "/home/joaolehodey/glassy_ws/install/glassy_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/joaolehodey/glassy_ws/install/px4_ros_com/local/lib/python3.10/dist-packages",
+        "/home/joaolehodey/glassy_ws/install/px4_msgs/local/lib/python3.10/dist-packages",
+        "/home/joaolehodey/glassy_ws/install/glassy_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "${default}",
+                "limitSymbolsToIncludedHeaders": false
+            },
+            "includePath": [
+                "/home/joaolehodey/glassy_ws/install/px4_ros_com/include/**",
+                "/home/joaolehodey/glassy_ws/install/px4_ros2_cpp/include/**",
+                "/home/joaolehodey/glassy_ws/install/px4_msgs/include/**",
+                "/home/joaolehodey/glassy_ws/install/glassy_interfaces/include/**",
+                "/opt/ros/humble/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_bringup/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_control/glassy_inner_loops/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_control/glassy_outer_loops/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_drivers/glassy_main/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_manual_control/glassy_joystick/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_planning/glassy_pathplanning/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_px4_drivers/glassy_px4_manual/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_px4_drivers/glassy_px4_state_manager/include/**",
+                "/home/joaolehodey/glassy_ws/src/glassy_simulation/include/**",
+                "/home/joaolehodey/glassy_ws/src/px4_ros_com/include/**",
+                "/usr/include/**",
+                "/opt/ros/humble/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,6 @@
+/glassy/glassy_state_manager:
+  ros__parameters:
+    mission_type: 2
+    types/PATH_FOLLOWING: 1
+    types/SUMMER_SCHOOL_CHALLENGE: 2
+      
