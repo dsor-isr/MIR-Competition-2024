@@ -57,7 +57,7 @@ Finally, run the setup script in order to install of the PX4-Autopilot dependenc
   ```
 * Clone the challenge code:
   ```console
-  git clone https://github.com/joaolehodey/summer_challenge_IST_DSOR.git
+  git clone https://github.com/joaolehodey/summer_challenge_IST_DSOR.git .
   ```
 * Clone the px4_msgs ros2 package:
   ```console
