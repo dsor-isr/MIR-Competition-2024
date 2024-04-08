@@ -135,7 +135,7 @@ Ensure everything is working by running starting the agent and checking for any 
   ```
   You may close this terminal, or use it for the next task.
   
-* Open a new terminal and start the Micro XRCE-DDS Agent agent:
+* Open a new terminal (or use the previous one) and start the Micro XRCE-DDS Agent agent:
   ```console
   MicroXRCEAgent udp4 -p 8888
   ```
@@ -144,6 +144,8 @@ Ensure everything is working by running starting the agent and checking for any 
   cd ~/MyProject/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
+    You should get the following:
+![image](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/c3120b5d-fc32-40cb-ada1-d2f759d23376)
 
 * Open a new terminal, run the glassy_manager node:
     ```console
@@ -153,6 +155,11 @@ Ensure everything is working by running starting the agent and checking for any 
   ```console
     ros2 run glassy_challenge glassy_challenge
   ```
+* Open the QGroundControl App, this can be done by simply double clicking the QGroundControl.AppImage
+
+After oppening Qgroundcontrol, a connection should occur and you should see that the vehicle is connected to the app:
+![image](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/6a48337f-8ef3-46f7-ac4c-6be6b6c59985)
+
 
 ### MUST ADD SCREENSHOTS OF EXPECTED RESULTS ,...
 
