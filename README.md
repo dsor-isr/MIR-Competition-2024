@@ -127,7 +127,7 @@ Ensure everything is working by running starting the agent and checking for any 
   reboot
   ```
 
- #### The instalation is now complete, to ensure the complete setup is operational:
+ #### The instalation is now complete, lets put the whole system working for the first time:
 * Open a new terminal and compile the ROS2 workspace:
     ```console
   cd ~/MyProject/glassy_challenge_ws
@@ -161,12 +161,9 @@ After oppening Qgroundcontrol, a connection should occur and you should see that
 ![image](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/6a48337f-8ef3-46f7-ac4c-6be6b6c59985)
 
 
-### MUST ADD SCREENSHOTS OF EXPECTED RESULTS ,...
 
 
-### Additionally, some of the following tools may be usefull:
-* Plotjuggler: https://github.com/facontidavide/PlotJuggler
-* Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
+
 
 
 ## Workflow and solution development:
@@ -178,15 +175,44 @@ More specifically, you should only make changes in the function 'myChallengeCont
 ### Workflow:
 
 Open 4 distict terminals, in one of the terminals.
-In the first terminal run the MicroXRCEAgent:
+*In the first terminal run the MicroXRCEAgent:
 ```console
   MicroXRCEAgent udp4 -p 8888
 ```
 You can keep the agent running in the background, and not worry about it.
 
+*In a second terminal, start the simulation:
+  ```console
+  cd ~/MyProject/PX4-Autopilot
+  make px4_sitl gazebo-classic_glassy
+  ```
+You can also leave this running, altough sometimes, it is necessary to restart the simulation (if sensor/multicast errors occur, ... its usually good to restart the simulation)
+
+* In a third terminal start the glassy_manager node:
+    ```console
+  ros2 run glassy_manager glassy_manager
+  ```
+Simillarly to the above, this can keep running in the background.
+
+* Open QGroundControl, do this by double-clicking the QGroundControl.AppImage file (keep it open during your development).
+
+* Now, write your code in the 'glassy_challenge.py' file. When you are done and ready to test it, build the code and run the glassy_challenge node:
+     ```console
+  cd ~/MyProject/glassy_challenge_ws
+  colcon build --packages-select glassy_challenge #this builds your code
+  ros2 run glassy_challenge glassy_challenge  # this runs your code
+  ```
+
+
+Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode and Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer).
+
+To do both of the above you need to use QgroundControl:
 
 
 
+### Additionally, some of the following tools may be usefull to help you:
+* Plotjuggler: https://github.com/facontidavide/PlotJuggler
+* Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
 
 
