@@ -24,6 +24,11 @@ Please note that PCs/Macs with ARM architecture are not supported due to missing
 #### Installation Procedure:
 * Install ROS2 Humble by following the instructions on https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html (just copy and paste the terminal commands in the yellow boxes), make sure you install the desktop version (install the recommended version instead of the bare-bones version). Install the Development tools as well.
 Before moving forward, please ensure that ROS2 is properly installed by experimenting with the examples present in the ROS2 installation tutorial.
+
+* Install the colcon tools:
+  ```console
+  sudo apt install python3-colcon-common-extensions
+  ```
     
 * Create your Project Folder, in this case we will name it "MyProject", and enter the newly created folder:
   ```console
@@ -53,19 +58,35 @@ Finally, run the setup script in order to install of the PX4-Autopilot dependenc
   ```console
   bash ./Tools/setup/ubuntu.sh
   ```
-* Install Gazebo 11 by following the instructions on: https://classic.gazebosim.org/tutorials?tut=install_ubuntu, we recommend the one-line installer.
+* Install Gazebo 11 by following the instructions on: https://classic.gazebosim.org/tutorials?tut=install_ubuntu, we recommend the one-line installer. After installing, run the command:
+    ```console
+  gazebo
+  ```
+And ensure that the gazebo simulator opens, in an empty world.
+
+* Ensure the PX4 and the custom simulation by entering the PX4-Autopilot folder and starting the simulation:
+  ```console
+  cd ~MyFolder/PX4-Autopilot
+  make px4_sitl gazebo-classic_glassy
+  ```
+  An ocean world should appear, with a green RC boat present in the middle of it.
+
 * Create the QGroundControl folder:
   ```console
   cd ~/MyProject
   mkdir QGroundControl
   ```
-* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html, please place the QGroundControl.AppImage file downloaded in the MyProject/QGroundControl folder.
+* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html, please place the QGroundControl.AppImage file downloaded in the MyProject/QGroundControl folder. Ensure everything is working, by ensuring you can open the app (as explained in the download and install tutorial).
   
 * Re-enter the project folder:
     ```console
   cd ~/MyProject
   ```
 Follow the instructions to install the uXRCE-DDS (PX4-ROS 2/DDS Bridge): https://docs.px4.io/main/en/middleware/uxrce_dds.html#install-standalone-from-source
+Ensure everything is working by running starting the agent and checking for any warning or error:
+```console
+   MicroXRCEAgent udp4 -p 8888
+  ```
 
 * Again, return to the project folder:
   ```console
@@ -93,6 +114,7 @@ Follow the instructions to install the uXRCE-DDS (PX4-ROS 2/DDS Bridge): https:/
   cd px4_msgs
   git checkout release/1.14
   ```
+  
 
   
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
