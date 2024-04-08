@@ -22,10 +22,12 @@ Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** rec
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
 
 #### Installation Procedure:
-* Install ROS2 Humble by following the instructions on https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
-* Install Gazebo 11 by following the instructions on: https://classic.gazebosim.org/tutorials?tut=install_ubuntu
+* Install ROS2 Humble by following the instructions on https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html (just copy and paste the terminal commands in the yellow boxes), make sure you install the desktop version (install the recommended version instead of the bare-bones version). Install the Development tools as well.
+Before moving forward, please ensure that ROS2 is properly installed by experimenting with the examples present in the ROS2 installation tutorial.
+    
 * Create your Project Folder, in this case we will name it "MyProject", and enter the newly created folder:
   ```console
+  cd
   mkdir MyProject && cd MyProject
   ```
 * Clone the PX4 repository fork and switch to correct branch, you may do so by following the steps presented below:
@@ -51,11 +53,24 @@ Finally, run the setup script in order to install of the PX4-Autopilot dependenc
   ```console
   bash ./Tools/setup/ubuntu.sh
   ```
+* Install Gazebo 11 by following the instructions on: https://classic.gazebosim.org/tutorials?tut=install_ubuntu, we recommend the one-line installer.
+* Create the QGroundControl folder:
+  ```console
+  cd ~/MyProject
+  mkdir QGroundControl
+  ```
+* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html, please place the QGroundControl.AppImage file downloaded in the MyProject/QGroundControl folder.
+  
+* Re-enter the project folder:
+    ```console
+  cd ~/MyProject
+  ```
+Follow the instructions to install the uXRCE-DDS (PX4-ROS 2/DDS Bridge): https://docs.px4.io/main/en/middleware/uxrce_dds.html#install-standalone-from-source
 
-* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html
-* Inside ProjectFolder, follow the instructions to install the uXRCE-DDS (PX4-ROS 2/DDS Bridge): https://docs.px4.io/main/en/middleware/uxrce_dds.html#install-standalone-from-source
-
-* Inside a terminal, enter the ProjectFolder directory,
+* Again, return to the project folder:
+  ```console
+  cd ~/MyProject
+  ```
 * Create the ROS2 workspace folder and enter the newly created folder:
   ```console
   mkdir glassy_challenge_ws && cd glassy_challenge_ws
@@ -80,12 +95,15 @@ Finally, run the setup script in order to install of the PX4-Autopilot dependenc
   ```
 
   
-* Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by apending the following lines to the .bashrc file, (replace the '\*path_to_ProjectFolder_parent_directory\*' by the correct path.
+* Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
-  source /opt/ros/humble/setup.bash
-  source ~/*path_to_ProjectFolder_parent_directory*/ProjectFolder/glassy_px4_ws/install/setup.bash
+  echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc 
+  echo  'source ~/MyProject/glassy_px4_ws/install/setup.bash' >> ~/.bashrc 
   ```
 * **Restart your computer**
+    ```console
+  reboot
+  ```
 
  #### The instalation is now complete, to ensure everything is working:
 
