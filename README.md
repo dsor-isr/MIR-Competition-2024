@@ -127,21 +127,25 @@ Ensure everything is working by running starting the agent and checking for any 
   reboot
   ```
 
- #### The instalation is now complete, to ensure everything is working:
-
+ #### The instalation is now complete, to ensure the complete setup is operational:
+* Open a new terminal and compile the ROS2 workspace:
+    ```console
+  cd ~/MyProject/glassy_challenge_ws
+  colcon build 
+  ```
+  You may close this terminal, or use it for the next task.
+  
 * Open a new terminal and start the Micro XRCE-DDS Agent agent:
   ```console
   MicroXRCEAgent udp4 -p 8888
   ```
 * Open a new terminal and navigate to the PX4-Autopilot directory, then start the simulation (the first time will take longer):
     ```console
+  cd ~/MyProject/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
-* Open a new terminal and navigate to the glassy_challenge_ws directory, then build the ROS2 code (the first time will take longer):
-    ```console
-  colcon build
-  ```
-* When the building process is finished, run the glassy_manager node:
+
+* Open a new terminal, run the glassy_manager node:
     ```console
   ros2 run glassy_px4_manager glassy_px4_manager
   ```
@@ -158,9 +162,26 @@ Ensure everything is working by running starting the agent and checking for any 
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
 
-## Start developing your solution:
+## Workflow and solution development:
+
+### Solution development:
 As mentioned previously, to complete the challenge only the file 'glassy_challenge.py' inside 'ProjectFolder/glassy_challenge_ws/src/glassy_challenge/glassy/challenge' needs to be changed.
 More specifically, you should only make changes in the function 'myChallengeController' and, if you feel the need to keep track of more variables, those should be initialized in the class contructor.
+
+### Workflow:
+
+Open 4 distict terminals, in one of the terminals.
+In the first terminal run the MicroXRCEAgent:
+```console
+  MicroXRCEAgent udp4 -p 8888
+```
+You can keep the agent running in the background, and not worry about it.
+
+
+
+
+
+
 
 ## In case you have any questions:
 -- insert here contacts, ...
