@@ -1,18 +1,23 @@
 # MIR Competition 2024 
 
-...
-...
-...
+In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity research ASV...
 
 # Instalation Guidelines:
 
 #### At the end of these instructions, your project folder should have the following structure:
-![folder_struct_glassy_challenge](https://github.com/joaolehodey/summer_challenge_IST_DSOR/assets/69345264/1022c432-65f5-478e-a54b-57e3fdc693a4)
+![folder_struct_glassy_challenge](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/d5a62ac1-5abb-4a4c-bb2e-b6bccc614ae8)
+
+The "MyProject" folder, constains 
 
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
 
-#### Step-by-step instructions:
-Please ensure you have Ubuntu 22.04 installed on your machine.
+### Step-by-step instructions:
+
+#### System requirements:
+Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
+Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
+
+#### Installation Procedure:
 * Install ROS2 Humble by following the instructions on https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
 * Install Gazebo 11 by following the instructions on: https://classic.gazebosim.org/tutorials?tut=install_ubuntu
 * Create your Project Folder, in this case we will name it "MyProject", and enter the newly created folder:
@@ -21,7 +26,7 @@ Please ensure you have Ubuntu 22.04 installed on your machine.
   ```
 * Clone the PX4 repository fork and switch to correct branch, you may do so by following the steps presented below:
   ```console
-  git clone --recurse-submodules -j8 https://github.com/joaolehodey/PX4-Autopilot
+  git clone --recurse-submodules https://github.com/joaolehodey/PX4-Autopilot
   ```
   ```console
   cd PX4-Autopilot
