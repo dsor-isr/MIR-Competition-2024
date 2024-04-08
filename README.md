@@ -11,7 +11,7 @@ The "MyProject" folder, constains 4 different directories with the following obj
 * PX4-Autopilot: This folder contains a fork of the original PX4-Autopilot, with the addition of a custom made simulation of our ASV. Our ASV is equiped with a Pixhawk running PX4-Autopilot. The PX4-Autopilot is used to to its out-of-the-box sensor integration.
 * QGroundControl: This Folder will contain the file QGroundControl.AppImage. The QGroundControl application is oppened either by doubleclicking the file or executing the file in a terminal. The previous is used to monitor the state of the vehicle from the 'Ground station', its is used to change the current vehicle mode, check its position and orientation on the map, ...
 * Micro-XRCE-DDS-Agent: This folder contains the Micro XRCE DDS Agent, which is used to bridge the u-orb topics (internal PX4 information topics) to Robot Operating System 2 (ROS2) Topics.
-* glassy_challenge_ws: This folder contains software developed to communicate, monitor and activate missions. In this case, the mission that is activated is the challenge mission, where your own controller will run.
+* glassy_challenge_ws: This folder contains software developed to communicate, monitor and activate missions. Is is structured following the usual ROS2 structure. In this case, the mission that will be activated is the challenge mission, where your own controller will run.
 
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
 
