@@ -66,7 +66,8 @@ And ensure that the gazebo simulator opens, in an empty world.
 
 * Ensure the PX4 and the custom simulation by entering the PX4-Autopilot folder and starting the simulation:
   ```console
-  cd ~MIR_Project_2024/PX4-Autopilot
+  cd 
+  MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
   An ocean world should appear, with a green RC boat present in the middle of it.
