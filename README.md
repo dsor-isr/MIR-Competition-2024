@@ -208,7 +208,7 @@ Your code is running, however nothing is happening, this is because you need to 
 
 To do both of the above you need to use QgroundControl:
 
-
+![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/d7781456-1135-4dc2-9592-caf32f6cf5b8)
 
 ### Additionally, some of the following tools may be usefull to help you:
 * Plotjuggler: https://github.com/facontidavide/PlotJuggler
