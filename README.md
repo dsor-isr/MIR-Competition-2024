@@ -2,10 +2,10 @@
 
 In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity research Autonomous Surface Vehicle (ASV)...
 
-# Instalation Guidelines (please ensure you have good :
+# Instalation Guidelines:
 
 #### At the end of these instructions, your project folder should have the following structure:
-![folder_struct_glassy_challenge](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/d5a62ac1-5abb-4a4c-bb2e-b6bccc614ae8)
+![folder_struct_glassy_challenge](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/8d671db8-3be0-41e7-8901-ec253e136641)
 
 The "MIR_Project_2024" folder, constains 4 different directories with the following objectives:
 * PX4-Autopilot: This folder contains a fork of the original PX4-Autopilot, with the addition of a custom made simulation of our ASV. Our ASV is equiped with a Pixhawk running PX4-Autopilot. The PX4-Autopilot is used to to its out-of-the-box sensor integration.
@@ -16,7 +16,7 @@ The "MIR_Project_2024" folder, constains 4 different directories with the follow
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
 
 ### Step-by-step instructions:
-
+( ENSURE YOU HAVE A GOOD WIFI CONNECTION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
