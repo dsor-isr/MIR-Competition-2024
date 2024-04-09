@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='joaolehodey',
     maintainer_email='joao.lehodey@gmail.com',
-    description='TODO: Package description',
+    description='This package is used for the MIR 2024 challenge',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={

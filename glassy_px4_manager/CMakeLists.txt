@@ -17,7 +17,6 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(MAVSDK REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(glassy_msgs REQUIRED)
@@ -33,7 +32,6 @@ file(GLOB_RECURSE SOURCE_FILES src/*.cpp)           #------------ important to w
 add_executable(glassy_px4_manager src/main.cpp ${SOURCE_FILES})
 
 target_compile_features(glassy_px4_manager PRIVATE cxx_std_20)
-target_include_directories(glassy_px4_manager PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/mavsdk_node   ${CMAKE_CURRENT_SOURCE_DIR}/src/ros_node)
 
 ament_target_dependencies(glassy_px4_manager rclcpp std_msgs px4_msgs glassy_msgs)
 
