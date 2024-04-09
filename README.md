@@ -14,8 +14,10 @@ The "MIR_Project_2024" folder, constains 4 different directories with the follow
 * glassy_challenge_ws: This folder contains software developed to communicate, monitor and activate missions. Is is structured following the usual ROS2 structure. In this case, the mission that will be activated is the challenge mission, where your own controller will run.
 
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
+
+( ENSURE YOU HAVE A GOOD WIFI CONNECTION DURING THE INSTALLATION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
+
 ### Option 1: Single-Line Installation (RECOMMENDED)
-( ENSURE YOU HAVE A GOOD WIFI CONNECTION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
 In a terminal, run:
 ```console
 curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
