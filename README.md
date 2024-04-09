@@ -2,12 +2,12 @@
 
 In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity research Autonomous Surface Vehicle (ASV)...
 
-# Instalation Guidelines:
+# Instalation Guidelines (please ensure you have good :
 
 #### At the end of these instructions, your project folder should have the following structure:
 ![folder_struct_glassy_challenge](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/d5a62ac1-5abb-4a4c-bb2e-b6bccc614ae8)
 
-The "MyProject" folder, constains 4 different directories with the following objectives:
+The "MIR_Project_2024" folder, constains 4 different directories with the following objectives:
 * PX4-Autopilot: This folder contains a fork of the original PX4-Autopilot, with the addition of a custom made simulation of our ASV. Our ASV is equiped with a Pixhawk running PX4-Autopilot. The PX4-Autopilot is used to to its out-of-the-box sensor integration.
 * QGroundControl: This Folder will contain the file QGroundControl.AppImage. The QGroundControl application is oppened either by doubleclicking the file or executing the file in a terminal. The previous is used to monitor the state of the vehicle from the 'Ground station', its is used to change the current vehicle mode, check its position and orientation on the map, ...
 * Micro-XRCE-DDS-Agent: This folder contains the Micro XRCE DDS Agent, which is used to bridge the u-orb topics (internal PX4 information topics) to Robot Operating System 2 (ROS2) Topics.
@@ -30,10 +30,10 @@ Before moving forward, please ensure that ROS2 is properly installed by experime
   sudo apt install python3-colcon-common-extensions
   ```
     
-* Create your Project Folder, in this case we will name it "MyProject", and enter the newly created folder:
+* Create your Project Folder, in this case we will name it "MIR_Project_2024", and enter the newly created folder:
   ```console
   cd
-  mkdir MyProject && cd MyProject
+  mkdir MIR_Project_2024 && cd MIR_Project_2024
   ```
 * Clone the PX4 repository fork and switch to correct branch, you may do so by following the steps presented below:
   ```console
@@ -73,14 +73,14 @@ And ensure that the gazebo simulator opens, in an empty world.
 
 * Create the QGroundControl folder:
   ```console
-  cd ~/MyProject
+  cd ~/MIR_Project_2024
   mkdir QGroundControl
   ```
-* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html, please place the QGroundControl.AppImage file downloaded in the MyProject/QGroundControl folder. Ensure everything is working, by ensuring you can open the app (as explained in the download and install tutorial).
+* Install QgroundControl following the Ubuntu installation instructions: https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html, please place the QGroundControl.AppImage file downloaded in the MIR_Project_2024/QGroundControl folder. Ensure everything is working, by ensuring you can open the app (as explained in the download and install tutorial).
   
 * Re-enter the project folder:
     ```console
-  cd ~/MyProject
+  cd ~/MIR_Project_2024
   ```
 Follow the instructions to install the uXRCE-DDS (PX4-ROS 2/DDS Bridge): https://docs.px4.io/main/en/middleware/uxrce_dds.html#install-standalone-from-source
 Ensure everything is working by running starting the agent and checking for any warning or error:
@@ -90,7 +90,7 @@ Ensure everything is working by running starting the agent and checking for any 
 
 * Again, return to the project folder:
   ```console
-  cd ~/MyProject
+  cd ~/MIR_Project_2024
   ```
 * Create the ROS2 workspace folder and enter the newly created folder:
   ```console
@@ -120,7 +120,7 @@ Ensure everything is working by running starting the agent and checking for any 
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
   echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc 
-  echo  'source ~/MyProject/glassy_px4_ws/install/setup.bash' >> ~/.bashrc 
+  echo  'source ~/MIR_Project_2024/glassy_challenge_ws/install/setup.bash' >> ~/.bashrc 
   ```
 * **Restart your computer**
     ```console
@@ -130,7 +130,7 @@ Ensure everything is working by running starting the agent and checking for any 
  #### The instalation is now complete, lets put the whole system working for the first time:
 * Open a new terminal and compile the ROS2 workspace:
     ```console
-  cd ~/MyProject/glassy_challenge_ws
+  cd ~/MIR_Project_2024/glassy_challenge_ws
   colcon build 
   ```
   You may close this terminal, or use it for the next task.
@@ -141,13 +141,13 @@ Ensure everything is working by running starting the agent and checking for any 
   ```
 * Open a new terminal and navigate to the PX4-Autopilot directory, then start the simulation (the first time will take longer):
     ```console
-  cd ~/MyProject/PX4-Autopilot
+  cd ~/MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
     You should get the following:
 ![image](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/c3120b5d-fc32-40cb-ada1-d2f759d23376)
 
-* Open a new terminal, run the glassy_manager node:
+* Open a new terminal, run the glassy_px4_manager node:
     ```console
   ros2 run glassy_px4_manager glassy_px4_manager
   ```
@@ -183,14 +183,14 @@ You can keep the agent running in the background, and not worry about it.
 
 *In a second terminal, start the simulation:
   ```console
-  cd ~/MyProject/PX4-Autopilot
+  cd ~/MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
 You can also leave this running, altough sometimes, it is necessary to restart the simulation (if sensor/multicast errors occur, ... its usually good to restart the simulation)
 
-* In a third terminal start the glassy_manager node:
+* In a third terminal start the glassy_px4_manager node:
     ```console
-  ros2 run glassy_manager glassy_manager
+  ros2 run glassy_px4_manager glassy_px4_manager
   ```
 Simillarly to the above, this can keep running in the background.
 
@@ -198,7 +198,7 @@ Simillarly to the above, this can keep running in the background.
 
 * Now, write your code in the 'glassy_challenge.py' file. When you are done and ready to test it, build the code and run the glassy_challenge node:
      ```console
-  cd ~/MyProject/glassy_challenge_ws
+  cd ~/MIR_Project_2024/glassy_challenge_ws
   colcon build --packages-select glassy_challenge #this builds your code
   ros2 run glassy_challenge glassy_challenge  # this runs your code
   ```
