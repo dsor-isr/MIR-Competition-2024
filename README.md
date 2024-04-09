@@ -207,9 +207,8 @@ Simillarly to the above, this can keep running in the background.
 Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode and Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer).
 
 To do both of the above you need to use QgroundControl:
-
-![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/d7781456-1135-4dc2-9592-caf32f6cf5b8)
-
+![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/f5825b22-a799-4b22-8411-90815c7c9de1)
+![Your How to Arm text](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/29a88eb8-36bf-465c-a6cd-9142a097353c)
 ### Additionally, some of the following tools may be usefull to help you:
 * Plotjuggler: https://github.com/facontidavide/PlotJuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
