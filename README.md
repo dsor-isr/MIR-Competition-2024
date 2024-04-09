@@ -204,7 +204,7 @@ Simillarly to the above, this can keep running in the background.
   ```
 
 
-Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode and Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer).
+Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode **AND** Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer). The first time you do this (before you write any code), you should see the vehicle moving forward in zigzags (constant thrust and sinusoidal rudder input).
 
 To do both of the above you need to use QgroundControl:
 ![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/f5825b22-a799-4b22-8411-90815c7c9de1)
