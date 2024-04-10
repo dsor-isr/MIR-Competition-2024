@@ -120,14 +120,6 @@ Ensure everything is working by running starting the agent and checking for any 
   ```console
   git clone https://github.com/PX4/px4_msgs.git
   ```
-
-* Enter the px4_msgs directory and checkout the correct branch:
-  ```console
-  cd px4_msgs
-  git checkout release/1.14
-  ```
-  
-
   
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
