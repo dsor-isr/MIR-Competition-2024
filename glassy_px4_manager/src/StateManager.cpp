@@ -307,6 +307,7 @@ void StateManager::publish_offboard_actuator_signals()
     if(!mission_is_on_){
         thrust_ = 0.0;
         rudder_ = 0.0;
+        std::cout << "Mission is off" << std::endl;
     }
     // in case of offboard mode and armed, do not publish, as the vehicle will be controlled by the mission.
     publish_offboard_control_mode();

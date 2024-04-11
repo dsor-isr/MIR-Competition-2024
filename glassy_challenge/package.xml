@@ -15,7 +15,7 @@
   <depend>rclpy</depend>
   <depend>std_srvs</depend>
   <depend>px4_msgs</depend>
-  <depend>glassy_interfaces</depend>
+  <depend>glassy_msgs</depend>
 
   <export>
     <build_type>ament_python</build_type>

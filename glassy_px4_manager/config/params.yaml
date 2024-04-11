@@ -3,4 +3,7 @@
     mission_type: 2
     types/PATH_FOLLOWING: 1
     types/SUMMER_SCHOOL_CHALLENGE: 2
+    rates/state_publishing: 50
+    rates/actuator_publishing: 40
+
       
