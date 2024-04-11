@@ -15,8 +15,19 @@ The "MIR_Project_2024" folder, constains 4 different directories with the follow
 
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
 
-### Step-by-step instructions:
-( ENSURE YOU HAVE A GOOD WIFI CONNECTION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
+( ENSURE YOU HAVE A GOOD WIFI CONNECTION DURING THE INSTALLATION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
+
+### Option 1: Single-Line Installation (RECOMMENDED)
+
+#### System requirements:
+Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
+Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
+
+In a terminal, run:
+```console
+curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
+```
+### Option 2: Step-by-step instructions:
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
@@ -66,7 +77,8 @@ And ensure that the gazebo simulator opens, in an empty world.
 
 * Ensure the PX4 and the custom simulation by entering the PX4-Autopilot folder and starting the simulation:
   ```console
-  cd ~MyFolder/PX4-Autopilot
+  cd 
+  MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
   ```
   An ocean world should appear, with a green RC boat present in the middle of it.
@@ -108,14 +120,6 @@ Ensure everything is working by running starting the agent and checking for any 
   ```console
   git clone https://github.com/PX4/px4_msgs.git
   ```
-
-* Enter the px4_msgs directory and checkout the correct branch:
-  ```console
-  cd px4_msgs
-  git checkout release/1.14
-  ```
-  
-
   
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
