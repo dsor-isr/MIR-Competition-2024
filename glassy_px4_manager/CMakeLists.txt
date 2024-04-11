@@ -23,6 +23,7 @@ find_package(glassy_msgs REQUIRED)
 
 # get glassy_messages as well as px4 messages
 find_package(px4_msgs REQUIRED)
+find_package (Eigen3 3.3 REQUIRED)
 
 
 #GLOBING
