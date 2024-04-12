@@ -1,6 +1,6 @@
 # MIR Competition 2024 
 
-In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity research Autonomous Surface Vehicle (ASV)...
+In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity Autonomous Surface Vehicle (ASV).
 
 # Instalation Guidelines:
 
