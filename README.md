@@ -138,7 +138,7 @@ Ensure everything is working by running starting the agent and checking for any 
   reboot
   ```
 
- #### The instalation is now complete, lets put the whole system working for the first time:
+ # The instalation is now complete, lets put the whole system working for the first time:
 * Open a new terminal and compile the ROS2 workspace:
     ```console
   cd ~/MIR_Project_2024/glassy_challenge_ws
