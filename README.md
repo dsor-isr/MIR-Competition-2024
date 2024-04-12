@@ -185,14 +185,15 @@ More specifically, you should only make changes in the function 'myChallengeCont
 
 ### Workflow:
 
-Open 4 distict terminals, in one of the terminals.
-*In the first terminal run the MicroXRCEAgent:
+Open 4 distict terminals.
+
+* In the first terminal run the MicroXRCEAgent:
 ```console
   MicroXRCEAgent udp4 -p 8888
 ```
 You can keep the agent running in the background, and not worry about it.
 
-*In a second terminal, start the simulation:
+* In a second terminal, start the simulation:
   ```console
   cd ~/MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
@@ -221,7 +222,7 @@ To do both of the above you need to use QgroundControl:
 ![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/f5825b22-a799-4b22-8411-90815c7c9de1)
 ![Your How to Arm text](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/29a88eb8-36bf-465c-a6cd-9142a097353c)
 
-***IMPORTANT:*** Please note that this simulation is very similar to the real system, including the failsafes. Failsafes are a set of conditions that allow the arming of the vehicle. These ensure the vehicle is not armed if there are sensor failures, no access to manual control, etc. Given the above, it is important that you have a source of manual inputs to act as your manual control, else you will not be able to arm the vehicle. If you have a joystick (PS4 controller, ...) , plug it into your machine, it should be detected by QGroundControl, and will allow the arming of the vehicle. You may also drive the vehicle around by entering Manual Mode (check the change mode tutorial above). If you do not have a joystick around, you may activate the QGroundControl virtual joystick ( it does not really allow proper manual control, but is usefull to be able to arm the vehicle). To activate the Qgroundcontrol virtual joystick:
+***IMPORTANT:*** Please note that this simulation is very similar to the real system, including the failsafes. Failsafes are a set of conditions that allow the arming of the vehicle. These ensure the vehicle is not armed if there are sensor failures, no access to manual control, etc. Given the above, it is important that you have a source of manual inputs to act as your manual control, otherwise you will not be able to arm the vehicle. If you have a joystick (PS4 controller, ...) , plug it into your machine, it should be detected by QGroundControl, and will allow the arming of the vehicle. You may also drive the vehicle around by entering Manual Mode (check the change mode tutorial above). If you do not have a joystick around, you may activate the QGroundControl virtual joystick ( it does not really allow proper manual control, but is usefull to allow the arming of the vehicle for developement purposes). To activate the Qgroundcontrol virtual joystick:
 
 ![Turn_virtual_joystick_on](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/712050cf-608b-4dc6-81f6-9840072d41cd)
 
