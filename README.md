@@ -17,12 +17,19 @@ For the challenge, the only file that needs to be changed is "glassy_challenge.p
 
 ( ENSURE YOU HAVE A GOOD WIFI CONNECTION DURING THE INSTALLATION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
 
-### Option 1: Single-Line Installation (RECOMMENDED)
+### Option 1: Script Installation (RECOMMENDED)
 
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
-
+In a terminal, run:
+```console
+sudo apt get update
+sudo apt get upgrade
+```
+```console
+sudo snap install curl
+```
 In a terminal, run:
 ```console
 curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
@@ -222,6 +229,8 @@ To do both of the above you need to use QgroundControl:
 * Plotjuggler: https://github.com/facontidavide/PlotJuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
+### If you want to know more about the sofwtare ecosystem used:
+* PX4 website: https://docs.px4.io/main/en/
 
 
 ## In case you have any questions:
