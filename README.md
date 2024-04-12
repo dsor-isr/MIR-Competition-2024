@@ -230,7 +230,7 @@ To do both of the above you need to use QgroundControl:
 * Plotjuggler: https://github.com/facontidavide/PlotJuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
-### If you want to know more about the sofwtare ecosystem used:
+### If you want to know more about the software ecosystem used:
 * PX4 website: https://docs.px4.io/main/en/
 
 
