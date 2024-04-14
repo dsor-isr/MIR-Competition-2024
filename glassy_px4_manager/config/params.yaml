@@ -13,8 +13,5 @@
     timeouts/state_timeout: 0.1
 
 
-    missions: ["PATH_FOLLOWING", "TRAJECTORY_TRACKING", "SUMMER_SCHOOL_CHALLENGE"]
-    current_mission: "SUMMER_SCHOOL_CHALLENGE"
-
 
       

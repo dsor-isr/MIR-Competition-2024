@@ -9,7 +9,7 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 #include <vector>
 using namespace glassy_msgs::msg;
 
-std::vector<uint8_t> missions_available = {
+const std::vector<uint8_t> MissionTypes = {
     MissionInfo::MISSION_OFF, 
     MissionInfo::PATH_FOLLOWING,
     MissionInfo::TRAJECTORY_TRACKING,

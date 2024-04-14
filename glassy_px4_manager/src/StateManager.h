@@ -30,7 +30,6 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 #include <glassy_msgs/srv/set_mission.h>
 
 #include "mission_types.h"
-#include "service_response_status.h"
 
 #include <chrono>
 #include <iostream>
@@ -38,6 +37,10 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 using namespace std::chrono;
 using namespace std::chrono_literals;
 using namespace px4_msgs::msg;
+
+
+
+extern const std::vector<uint8_t> MissionTypes;
 
 
 /**
