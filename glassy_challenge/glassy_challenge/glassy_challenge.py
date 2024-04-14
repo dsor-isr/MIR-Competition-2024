@@ -25,6 +25,7 @@ class GlassyChallenge(Node):
         self.yaw_rate = 0.0
         self.surge = 0.0
         self.sway = 0.0
+        self.yaw = 0.0
 
         self.initial_yaw = 0.0
 
@@ -34,10 +35,6 @@ class GlassyChallenge(Node):
         self.initial_x = 0.0
         self.initial_y = 0.0
 
-        self.yaw = 0.0
-
-        self.quaternion_attitude = sp.spatial.transform.Rotation.from_quat([0, 0, 0, 1])
-        self.euler_attitude = self.quaternion_attitude.as_euler('xyz')
 
         #********************************************************************************
         #
@@ -72,8 +69,9 @@ class GlassyChallenge(Node):
         # create subscriber for the state of the vehicle
         self.state_odometry_subscriber_ = self.create_subscription(glassy_msgs.State, 'glassy/state', self.state_subscription_callback, qos_profile)
 
-        # create service for the challenge
-        self.start_stop_service_ = self.create_service(std_srvs.SetBool, 'start_stop_challenge', self.start_stop_service_callback)
+        # create subscriber for the mission status
+        self.mission_status_subscriber_ = self.create_subscription(glassy_msgs.MissionInfo, 'glassy/mission_status', self.mission_status_subscription_callback, 1)
+
 
         # create timer
         self.timer_control_ = self.create_timer(1.0/30.0, self.myChallengeController)
@@ -101,21 +99,17 @@ class GlassyChallenge(Node):
 
 
 
-    def start_stop_service_callback(self, request, response):
-        self.is_active = request.data
+    def mission_status_subscription_callback(self, msg):
         if self.is_active:
-            self.timer_control_.reset()
+            if msg.mission_mode != glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
+                self.timer_control_.cancel()
+                self.is_active = False
 
-            #we introduce an offset to complicate things a bit (in real life, external disturbances, model errors, etc. would do this for us)
-            self.initial_yaw = self.yaw+0.2
-            self.initial_x = self.x
-            self.initial_y = self.y
         else:
-            self.timer_control_.cancel()
-
-        response.success = True
-        return response
-
+            if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
+                self.timer_control_.reset()
+                self.is_active = True
+        
 
 
     def myChallengeController(self):

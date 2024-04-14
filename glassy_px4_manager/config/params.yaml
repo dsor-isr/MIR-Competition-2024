@@ -1,9 +1,20 @@
 /glassy/glassy_state_manager:
   ros__parameters:
     mission_type: 2
-    types/PATH_FOLLOWING: 1
-    types/SUMMER_SCHOOL_CHALLENGE: 2
     rates/state_publishing: 50
     rates/actuator_publishing: 40
+    rates/mission_info_publishing: 2
+
+    # mission timeout: time for which the mission will be executed
+    timeouts/mission_timeout: 20
+    # actuator timeout: time in which the actuator values should be updated
+    timeouts/actuator_timeout: 0.
+    # state timeout: time in which the state should be updated
+    timeouts/state_timeout: 0.1
+
+
+    missions: ["PATH_FOLLOWING", "TRAJECTORY_TRACKING", "SUMMER_SCHOOL_CHALLENGE"]
+    current_mission: "SUMMER_SCHOOL_CHALLENGE"
+
 
       

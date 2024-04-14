@@ -31,6 +31,7 @@ set(msg_files
   "msg/Actuators.msg"
   "msg/InnerLoopReferences.msg"
   "msg/PathReferences.msg"
+  "msg/MissionInfo.msg"
   )
 
 set(srv_files
@@ -38,6 +39,7 @@ set(srv_files
    "srv/SetPath.srv"
    "srv/LosParams.srv"
    "srv/SetLimits.srv"
+   "srv/SetMission.srv"
   )
 
 

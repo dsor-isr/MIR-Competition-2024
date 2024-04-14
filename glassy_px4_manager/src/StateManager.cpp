@@ -14,31 +14,22 @@ StateManager::StateManager() : Node("glassy_state_manager")
 
     // Initialize the parameters
     this->declare_parameter("mission_type", 2);
-    this->declare_parameter("types/PATH_FOLLOWING", 1);
-    this->declare_parameter("types/SUMMER_SCHOOL_CHALLENGE", 2);
     this->declare_parameter("rates/state_publishing", 50);
     this->declare_parameter("rates/actuator_publishing", 40);
+    this->declare_parameter("rates/mission_info_publishing", 2);
+
 
 
     // get parameters
     int state_publishing_rate = this->get_parameter("rates/state_publishing").as_int();
     int actuator_publishing_rate = this->get_parameter("rates/actuator_publishing").as_int();
-
-    // Get the parameters
+    int mission_info_publishing_rate = this->get_parameter("rates/mission_info_publishing").as_int();
     int mission = this->get_parameter("mission_type").as_int();
 
+    // check that the mission type is valid
+
     // Initialize the mission type based on the parameter
-    if(mission == this->get_parameter("types/PATH_FOLLOWING").as_int()){
-        mission_type_ = PATH_FOLLOWING;
-        RCLCPP_INFO(this->get_logger(), "Mission type: PATH_FOLLOWING");
-    }
-    else if(mission == this->get_parameter("types/SUMMER_SCHOOL_CHALLENGE").as_int()){
-        mission_type_ = SUMMER_SCHOOL_CHALLENGE;
-        RCLCPP_INFO(this->get_logger(), "Mission type: SUMMER_SCHOOL_CHALLENGE");
-    }
-    else{
-        mission_type_ = SUMMER_SCHOOL_CHALLENGE;
-    }
+    mission_type_ = mission;
 
 
     // Initialize the variables
@@ -46,6 +37,11 @@ StateManager::StateManager() : Node("glassy_state_manager")
     actuators_msg_ = std::make_shared<glassy_msgs::msg::Actuators>();
     thrust_msg_ = std::make_shared<VehicleThrustSetpoint>();
     torque_msg_ = std::make_shared<VehicleTorqueSetpoint>();
+    mission_info_msg_ = std::make_shared<glassy_msgs::msg::MissionInfo>();
+
+
+    // Initialize the mission status
+    mission_info_msg_->mission_mode = glassy_msgs::msg::MissionInfo::MISSION_OFF;
 
     // Initialize publishers
     state_px4_publisher_ = this->create_publisher<glassy_msgs::msg::State>("/glassy/state_px4", 10);
@@ -53,6 +49,7 @@ StateManager::StateManager() : Node("glassy_state_manager")
     thrust_setpoint_publisher_ = this->create_publisher<VehicleThrustSetpoint>("/fmu/in/vehicle_thrust_setpoint", 10);
     torque_setpoint_publisher_ = this->create_publisher<VehicleTorqueSetpoint>("/fmu/in/vehicle_torque_setpoint", 10);
     vehicle_command_publisher_ = this->create_publisher<VehicleCommand>("/fmu/in/vehicle_command", 10);
+    mission_info_publisher_ = this->create_publisher<glassy_msgs::msg::MissionInfo>("/glassy/mission_status", 10);
 
     //subriber profile
     rmw_qos_profile_t qos_profile = rmw_qos_profile_sensor_data;
@@ -65,14 +62,15 @@ StateManager::StateManager() : Node("glassy_state_manager")
 
     actuator_glassy_subscriber_ = this->create_subscription<glassy_msgs::msg::Actuators>("/glassy/actuators",1,  std::bind(&StateManager::actuator_glassy_callback, this, std::placeholders::_1));
 
-    // define the clients for the services
-    path_following_client_ = this->create_client<std_srvs::srv::SetBool>("/fmu/in/path_following");
-    start_mission_summer_challenge_client_ = this->create_client<std_srvs::srv::SetBool>("start_stop_challenge");
+
 
     // define timers for state publishing and actuator publishing
     timer_actuator_publishing_ = this->create_wall_timer((1.0s/actuator_publishing_rate), std::bind(&StateManager::publish_offboard_actuator_signals, this));
 
-    timer_state_publishing_ = this->create_wall_timer((1.0s/state_publishing_rate), std::bind(&StateManager::publish_state_callback, this));
+    timer_state_publishing_ = this->create_wall_timer((1.0s/state_publishing_rate), std::bind(&
+    StateManager::publish_state_callback, this));
+
+    timer_mission_info_publishing_ = this->create_wall_timer(1.0s/mission_info_publishing_rate, std::bind(&StateManager::publish_mission_info, this));
 
 }
 
@@ -155,12 +153,14 @@ void StateManager::vehicle_control_mode_callback(const VehicleControlMode::Share
     if (offboard_mode_ && is_armed_ && !mission_is_on_)
     {
         // Initialize mission
-        mission_is_on_ = this->start_mission();
+        this->start_mission();
+        mission_is_on_ = true;
     }
     else if ((!offboard_mode_ || !is_armed_) && mission_is_on_)
     {
         // Stop mission
-        mission_is_on_ = !this->stop_mission();
+        this->stop_mission();
+        mission_is_on_ = false;
     } 
 };
 
@@ -221,75 +221,18 @@ void StateManager::publish_vehicle_command(uint16_t command, float param1, float
  * @brief Start a selected mission, this mission is selected by the parameter mission_type
  * 
  */
-bool StateManager::start_mission(){
-    return start_stop_mission(true);
+void StateManager::start_mission(){
+    mission_info_msg_->mission_mode = mission_type_;
 }
 
 /**
  * @brief Stop the current mission.
  * 
  */
-bool StateManager::stop_mission(){
-    return start_stop_mission(false);
+void StateManager::stop_mission(){
+    mission_info_msg_->mission_mode = glassy_msgs::msg::MissionInfo::MISSION_OFF;
 }
 
-/**
- * @brief Start or stop a mission
- * @param start     True to start, False to stop
- */
-bool StateManager::start_stop_mission(bool start){
-
-    if(mission_type_ == PATH_FOLLOWING){
-        return this->start_stop_path_following(start);
-    }
-    else if(mission_type_ == SUMMER_SCHOOL_CHALLENGE){
-        RCLCPP_INFO(this->get_logger(), "Starting/stoping summer_challenge, %d", start);
-        return this->start_stop_summer_challenge(start);
-    }
-    else{
-        return false;
-        RCLCPP_INFO(this->get_logger(), "Problem starting/stoping mission, unknown mission type");
-    }
-
-}
-
-/**
- * @brief Start or stop path following mission
- * @param start     True to start, False to stop
- */
-bool StateManager::start_stop_path_following(bool start){
-    bool is_service_available = start_mission_summer_challenge_client_->wait_for_service(0.1s);
-    if (!is_service_available) {
-        RCLCPP_ERROR(this->get_logger(), "Service not available");
-        this->disarm();
-        return false;
-    }
-
-    std_srvs::srv::SetBool::Request::SharedPtr request = std::make_shared<std_srvs::srv::SetBool::Request>();
-    request->data = start;
-    auto result = path_following_client_->async_send_request(request);
-    return true;
-}
-
-/**
- * @brief Start or stop summer challenge
- * @param start     True to start, False to stop
- */
-bool StateManager::start_stop_summer_challenge(bool start){
-
-    bool is_service_available = start_mission_summer_challenge_client_->wait_for_service(0.1s);
-    if (!is_service_available) {
-        RCLCPP_ERROR(this->get_logger(), "Service not available");
-        this->disarm();
-        return false;
-    }
-
-    std_srvs::srv::SetBool::Request::SharedPtr request = std::make_shared<std_srvs::srv::SetBool::Request>();
-    request->data = start;
-    auto result = start_mission_summer_challenge_client_->async_send_request(request);
-
-    return true;
-}
 
 
 /* ------------------------------
@@ -307,7 +250,6 @@ void StateManager::publish_offboard_actuator_signals()
     if(!mission_is_on_){
         thrust_ = 0.0;
         rudder_ = 0.0;
-        std::cout << "Mission is off" << std::endl;
     }
     // in case of offboard mode and armed, do not publish, as the vehicle will be controlled by the mission.
     publish_offboard_control_mode();
@@ -336,4 +278,11 @@ void StateManager::publish_offboard_actuator_signals()
  */
 void StateManager::publish_state_callback(){
     state_px4_publisher_->publish(*state_px4_msg_);
+}
+
+/**
+ * @brief Publish the mission status of the vehicle
+ */
+void StateManager::publish_mission_info(){
+    mission_info_publisher_->publish(*mission_info_msg_);
 }

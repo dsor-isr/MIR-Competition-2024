@@ -20,12 +20,17 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 #include <px4_msgs/msg/vehicle_odometry.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <stdint.h>
-#include "mission_types.h"
+
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
 
 #include <glassy_msgs/msg/state.hpp>
 #include <glassy_msgs/msg/actuators.hpp>
+#include <glassy_msgs/msg/mission_info.hpp>
+#include <glassy_msgs/srv/set_mission.h>
+
+#include "mission_types.h"
+#include "service_response_status.h"
 
 #include <chrono>
 #include <iostream>
@@ -53,13 +58,18 @@ private:
 	*/
 	rclcpp::TimerBase::SharedPtr timer_actuator_publishing_;
 	rclcpp::TimerBase::SharedPtr timer_state_publishing_;
+	rclcpp::TimerBase::SharedPtr timer_offboard_control_mode_publishing_;
+	rclcpp::TimerBase::SharedPtr timer_mission_info_publishing_;
+	rclcpp::TimerBase::SharedPtr timer_;
 
+	
 	/*
 		Timer callbacks
 	*/
 	void publish_state_callback();
 	void publish_offboard_control_mode();
     void publish_offboard_actuator_signals();
+	void publish_mission_info();
 
 
     /*
@@ -70,6 +80,7 @@ private:
 	rclcpp::Publisher<VehicleTorqueSetpoint>::SharedPtr torque_setpoint_publisher_;
 	rclcpp::Publisher<VehicleCommand>::SharedPtr vehicle_command_publisher_;
 	rclcpp::Publisher<glassy_msgs::msg::State>::SharedPtr state_px4_publisher_;
+	rclcpp::Publisher<glassy_msgs::msg::MissionInfo>::SharedPtr mission_info_publisher_;
 
 
     /*
@@ -90,8 +101,9 @@ private:
 	/*
 		Clients
 	*/
-	rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr start_mission_summer_challenge_client_;
-	rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr path_following_client_;
+	// rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr start_mission_summer_challenge_client_;
+	// rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr path_following_client_;
+	// ServiceResponseStatus start_mission_service_status_ = WAITING_TO_BE_CALLED;
 
 	std::atomic<uint64_t> timestamp_;   //!< common synced timestamped
 
@@ -104,6 +116,7 @@ private:
 	std::shared_ptr<glassy_msgs::msg::Actuators> actuators_msg_;
 	std::shared_ptr<VehicleThrustSetpoint> thrust_msg_;
     std::shared_ptr<VehicleTorqueSetpoint> torque_msg_;
+	std::shared_ptr<glassy_msgs::msg::MissionInfo> mission_info_msg_;
 
 	
 
@@ -111,7 +124,7 @@ private:
 
 
 
-	MissionType mission_type_ = MissionType::SUMMER_SCHOOL_CHALLENGE;
+	uint8_t mission_type_ = glassy_msgs::msg::MissionInfo::SUMMER_CHALLENGE;
 
 
 
@@ -130,13 +143,8 @@ private:
 
 	void publish_vehicle_command(uint16_t command, float param1 = 0.0, float param2 = 0.0);
 
-    bool start_mission();
-    bool stop_mission();
-	bool start_stop_mission(bool start);
-
-	bool start_stop_path_following(bool start);
-	bool start_stop_summer_challenge(bool start);
-    
+    void start_mission();
+    void stop_mission();
 };
 
 #endif
