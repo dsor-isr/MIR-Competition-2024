@@ -1,6 +1,6 @@
 # MIR Competition 2024 
 
-In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity research Autonomous Surface Vehicle (ASV)...
+In the 2024 edition of the MIR challenge, you will have the oportunity to design a controller for a high velocity Autonomous Surface Vehicle (ASV).
 
 # Instalation Guidelines:
 
@@ -17,12 +17,19 @@ For the challenge, the only file that needs to be changed is "glassy_challenge.p
 
 ( ENSURE YOU HAVE A GOOD WIFI CONNECTION DURING THE INSTALLATION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
 
-### Option 1: Single-Line Installation (RECOMMENDED)
+### Option 1: Script Installation (RECOMMENDED)
 
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
-
+In a terminal, run:
+```console
+sudo apt get update
+sudo apt get upgrade
+```
+```console
+sudo snap install curl
+```
 In a terminal, run:
 ```console
 curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
@@ -131,7 +138,7 @@ Ensure everything is working by running starting the agent and checking for any 
   reboot
   ```
 
- #### The instalation is now complete, lets put the whole system working for the first time:
+ # The instalation is now complete, lets put the whole system working for the first time:
 * Open a new terminal and compile the ROS2 workspace:
     ```console
   cd ~/MIR_Project_2024/glassy_challenge_ws
@@ -178,14 +185,15 @@ More specifically, you should only make changes in the function 'myChallengeCont
 
 ### Workflow:
 
-Open 4 distict terminals, in one of the terminals.
-*In the first terminal run the MicroXRCEAgent:
+Open 4 distict terminals.
+
+* In the first terminal run the MicroXRCEAgent:
 ```console
   MicroXRCEAgent udp4 -p 8888
 ```
 You can keep the agent running in the background, and not worry about it.
 
-*In a second terminal, start the simulation:
+* In a second terminal, start the simulation:
   ```console
   cd ~/MIR_Project_2024/PX4-Autopilot
   make px4_sitl gazebo-classic_glassy
@@ -214,7 +222,7 @@ To do both of the above you need to use QgroundControl:
 ![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/f5825b22-a799-4b22-8411-90815c7c9de1)
 ![Your How to Arm text](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/29a88eb8-36bf-465c-a6cd-9142a097353c)
 
-***IMPORTANT:*** Please note that this simulation is very similar to the real system, including the failsafes. Failsafes are a set of conditions that allow the arming of the vehicle. These ensure the vehicle is not armed if there are sensor failures, no access to manual control, etc. Given the above, it is important that you have a source of manual inputs to act as your manual control, else you will not be able to arm the vehicle. If you have a joystick (PS4 controller, ...) , plug it into your machine, it should be detected by QGroundControl, and will allow the arming of the vehicle. You may also drive the vehicle around by entering Manual Mode (check the change mode tutorial above). If you do not have a joystick around, you may activate the QGroundControl virtual joystick ( it does not really allow proper manual control, but is usefull to be able to arm the vehicle). To activate the Qgroundcontrol virtual joystick:
+***IMPORTANT:*** Please note that this simulation is very similar to the real system, including the failsafes. Failsafes are a set of conditions that allow the arming of the vehicle. These ensure the vehicle is not armed if there are sensor failures, no access to manual control, etc. Given the above, it is important that you have a source of manual inputs to act as your manual control, otherwise you will not be able to arm the vehicle. If you have a joystick (PS4 controller, ...) , plug it into your machine, it should be detected by QGroundControl, and will allow the arming of the vehicle. You may also drive the vehicle around by entering Manual Mode (check the change mode tutorial above). If you do not have a joystick around, you may activate the QGroundControl virtual joystick ( it does not really allow proper manual control, but is usefull to allow the arming of the vehicle for developement purposes). To activate the Qgroundcontrol virtual joystick:
 
 ![Turn_virtual_joystick_on](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/712050cf-608b-4dc6-81f6-9840072d41cd)
 
@@ -222,6 +230,8 @@ To do both of the above you need to use QgroundControl:
 * Plotjuggler: https://github.com/facontidavide/PlotJuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
+### If you want to know more about the software ecosystem used:
+* PX4 website: https://docs.px4.io/main/en/
 
 
 ## In case you have any questions:
