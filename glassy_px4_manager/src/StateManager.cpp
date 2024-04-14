@@ -29,7 +29,12 @@ StateManager::StateManager() : Node("glassy_state_manager")
     // check that the mission type is valid
 
     // Initialize the mission type based on the parameter
-    mission_type_ = mission;
+    if(std::find(MissionTypes.begin(), MissionTypes.end(), mission) != MissionTypes.end()){
+        
+        mission_type_ = mission;
+    } else{
+        mission_type_ = MissionInfo::SUMMER_CHALLENGE;
+    }
 
 
     // Initialize the variables

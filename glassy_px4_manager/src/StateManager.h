@@ -33,6 +33,7 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 
 #include <chrono>
 #include <iostream>
+#include <algorithm>
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -100,13 +101,6 @@ private:
 	void vehicle_odometry_callback(const VehicleOdometry::SharedPtr msg);
 	void actuator_glassy_callback(const glassy_msgs::msg::Actuators::SharedPtr msg);
 
-
-	/*
-		Clients
-	*/
-	// rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr start_mission_summer_challenge_client_;
-	// rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr path_following_client_;
-	// ServiceResponseStatus start_mission_service_status_ = WAITING_TO_BE_CALLED;
 
 	std::atomic<uint64_t> timestamp_;   //!< common synced timestamped
 

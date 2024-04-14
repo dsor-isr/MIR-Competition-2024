@@ -35,6 +35,8 @@ class GlassyChallenge(Node):
         self.initial_x = 0.0
         self.initial_y = 0.0
 
+        self.is_active = False
+
 
         #********************************************************************************
         #
