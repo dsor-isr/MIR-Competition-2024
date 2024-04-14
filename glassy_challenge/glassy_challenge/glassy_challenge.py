@@ -77,8 +77,9 @@ class GlassyChallenge(Node):
 
         # create timer
         self.timer_control_ = self.create_timer(1.0/30.0, self.myChallengeController)
-
         self.timer_control_.cancel();
+    
+        self.time_of_last_mission_status_msg_received = None;
 
 
 
@@ -102,6 +103,9 @@ class GlassyChallenge(Node):
 
 
     def mission_status_subscription_callback(self, msg):
+        """
+        Checks whether the mission is active or not.
+        """
         if self.is_active:
             if msg.mission_mode != glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
                 self.timer_control_.cancel()
@@ -111,6 +115,11 @@ class GlassyChallenge(Node):
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
                 self.timer_control_.reset()
                 self.is_active = True
+
+                # reset the initial mission values
+                self.initial_x = self.x
+                self.initial_y = self.y
+                self.initial_yaw = self.yaw
         
 
 
@@ -120,7 +129,8 @@ class GlassyChallenge(Node):
         (it will run at 30Hz)
         """
         # Implement your controller here 
-        # You can use the variables self.yaw, self.yaw_rate, self.surge, self.sway, self.x, self.y (only a small subset of these is actually needed)
+        # You can use the variables self.yaw, self.yaw_rate, self.surge, self.sway, self.x, self.y (only a subset of these is actually needed)
+        # You also have access to the initial position and yaw (self.initial_x, self.initial_y, self.initial_yaw)
         # You can also use the libraries numpy and scipy
         # You can add more variables to the class to keep for example the previous errors/error integral,...
         # Please do not overcomplicate, the challenge is simple (~ 20 lines of code should be enough).
@@ -141,6 +151,7 @@ class GlassyChallenge(Node):
         #*********************************************************************************
 
 
+        # After finishing your calculations, fill the following variables with the values you want to publish, and thats it, you are done.
 
         # Fill these values in please (motor should be between [0,1]) (max thrust is reduced, to avoid accidents)
         #currently, the motor is a constant value, just to test that everything is working
@@ -151,14 +162,14 @@ class GlassyChallenge(Node):
         rudder_value = np.sin(self.get_clock().now().nanoseconds/1000000000)
 
 
-
         self.publish_actuators(motor_value, rudder_value)
 
 
 
+    #
     def publish_actuators(self, motor_value, rudder_value):
         """
-        Publish the actuator values.
+        Takes the motor and rudder values. Clips and publishes them.
         """
         #clip values
         motor_value = np.clip(motor_value, 0.0, 1.0)
