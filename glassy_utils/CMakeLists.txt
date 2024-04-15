@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(glassy_px4_manager)
+project(glassy_utils)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -17,28 +17,33 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(glassy_msgs REQUIRED)
-
-# get glassy_messages as well as px4 messages
-find_package(px4_msgs REQUIRED)
 find_package (Eigen3 3.3 REQUIRED)
-find_package(glassy_utils REQUIRED)
 
 
-#GLOBING
-file(GLOB_RECURSE SOURCE_FILES src/*.cpp)           #------------ important to work
+# let the compiler search for headers in the include folder
+include_directories(include)
+ 
+# define a library target called my_value_converter_library
+add_library(glassy_transforms src/glassy_transforms.cpp)
+ 
+# this line to exports the library
+ament_export_targets(glassy_transforms HAS_LIBRARY_TARGET)
+ 
+# install the include/my_cpp_library directory to the install/include/my_cpp_library
+install(
+  DIRECTORY include/transforms
+  DESTINATION include
+)
+ 
+install(
+  TARGETS glassy_transforms
+  EXPORT glassy_transforms
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
 
-
-add_executable(glassy_px4_manager src/main.cpp ${SOURCE_FILES})
-
-target_compile_features(glassy_px4_manager PRIVATE cxx_std_20)
-
-ament_target_dependencies(glassy_px4_manager rclcpp std_msgs px4_msgs glassy_msgs glassy_utils Eigen3)
-
-install(TARGETS glassy_px4_manager
-  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -50,16 +55,5 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
-
-# Install launch files.
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-install(DIRECTORY
-  config
-  DESTINATION share/${PROJECT_NAME}
-)
 
 ament_package()

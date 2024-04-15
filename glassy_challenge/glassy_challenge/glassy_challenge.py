@@ -6,8 +6,6 @@ import std_srvs.srv as std_srvs
 
 import glassy_msgs.msg as glassy_msgs
 
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
-
 
 # allowed libraries
 import numpy as np
@@ -52,24 +50,11 @@ class GlassyChallenge(Node):
         #
         #*********************************************************************************
 
-
-
-
-        # Configure QoS profile for publishing and subscribing
-        qos_profile = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            durability=DurabilityPolicy.TRANSIENT_LOCAL,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=1
-        )
-
-
-
         # create publishers for torque and thrust setpoints
         self.actuators_publisher_ = self.create_publisher(glassy_msgs.Actuators, 'glassy/actuators', 1)
 
         # create subscriber for the state of the vehicle
-        self.state_odometry_subscriber_ = self.create_subscription(glassy_msgs.State, 'glassy/state', self.state_subscription_callback, qos_profile)
+        self.state_subscriber_ = self.create_subscription(glassy_msgs.State, 'glassy/state', self.state_subscription_callback, 1)
 
         # create subscriber for the mission status
         self.mission_status_subscriber_ = self.create_subscription(glassy_msgs.MissionInfo, 'glassy/mission_status', self.mission_status_subscription_callback, 1)
@@ -92,8 +77,8 @@ class GlassyChallenge(Node):
         self.yaw = msg.yaw
         self.yaw_rate = msg.yaw_rate
 
-        self.surge = msg.surge
-        self.sway = msg.sway
+        self.surge = msg.v_body[0]
+        self.sway = msg.v_body[1]
 
         self.x = msg.p_ned[0]
         self.y = msg.p_ned[1]
@@ -135,6 +120,20 @@ class GlassyChallenge(Node):
         # You can add more variables to the class to keep for example the previous errors/error integral,...
         # Please do not overcomplicate, the challenge is simple (~ 20 lines of code should be enough).
         # Please, use this function and if you need, add variables to the class constructor, do not change ANY other function.
+
+        # Variables available, and corresponding units:
+        # yaw -> [-pi, pi] (rad)
+        # yaw_rate (rad/s)
+        # surge (m/s)
+        # sway (m/s)
+        # x, y (m)
+
+        # You also have access to the initial yaw, and position:
+        # initial_yaw [-pi, pi] (rad)
+        # initial_x, initial_y (m)
+
+
+
 
         #********************************************************************************
         #

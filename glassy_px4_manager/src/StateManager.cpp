@@ -49,7 +49,7 @@ StateManager::StateManager() : Node("glassy_state_manager")
     mission_info_msg_->mission_mode = glassy_msgs::msg::MissionInfo::MISSION_OFF;
 
     // Initialize publishers
-    state_px4_publisher_ = this->create_publisher<glassy_msgs::msg::State>("/glassy/state_px4", 10);
+    state_px4_publisher_ = this->create_publisher<glassy_msgs::msg::State>("/glassy/state", 1);
     offboard_control_mode_publisher_ = this->create_publisher<OffboardControlMode>("/fmu/in/offboard_control_mode", 10);
     thrust_setpoint_publisher_ = this->create_publisher<VehicleThrustSetpoint>("/fmu/in/vehicle_thrust_setpoint", 10);
     torque_setpoint_publisher_ = this->create_publisher<VehicleTorqueSetpoint>("/fmu/in/vehicle_torque_setpoint", 10);
@@ -91,13 +91,13 @@ void StateManager::vehicle_odometry_callback(const VehicleOdometry::SharedPtr ms
 
     // populate an eigen quaternion with the info from the odometry msg 
     Eigen::Quaterniond q(msg->q[0], msg->q[1], msg->q[2], msg->q[3]);
-
+    
     // convert the quaternion to euler angles
-    Eigen::Vector3d euler_angles= q.toRotationMatrix().eulerAngles(2, 1, 0);
+    Eigen::Vector3d euler_angles= quat_to_euler_ZYX(q);
 
-    state_px4_msg_->yaw = euler_angles[0];
+    state_px4_msg_->yaw = euler_angles[2];
     state_px4_msg_->pitch = euler_angles[1];
-    state_px4_msg_->roll = euler_angles[2];
+    state_px4_msg_->roll = euler_angles[0];
 
 
     state_px4_msg_->yaw_rate = msg->angular_velocity[2];
