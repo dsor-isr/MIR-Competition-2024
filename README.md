@@ -24,8 +24,8 @@ Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** rec
 Please note that PCs/Macs with ARM architecture are not supported due to missing dependencies needed for both PX4-Autopilot Software-In-The-Loop (PX4 SITL) and the Gazebo Simulator.
 In a terminal, run:
 ```console
-sudo apt get update
-sudo apt get upgrade
+sudo apt-get update
+sudo apt-get upgrade
 ```
 ```console
 sudo snap install curl
