@@ -67,7 +67,7 @@ Before moving forward, please ensure that ROS2 is properly installed by experime
   make distclean
   ```
   ```console
-  git checkout glassy_simulation
+  git checkout glassy_MIR
   ```
   ```console
   make submodulesclean
