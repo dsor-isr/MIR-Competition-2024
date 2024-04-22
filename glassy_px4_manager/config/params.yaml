@@ -8,9 +8,10 @@
     # mission timeout: time for which the mission will be executed
     timeouts/mission_timeout: 20
     # actuator timeout: time in which the actuator values should be updated
-    timeouts/actuator_timeout: 0.
+    timeouts/actuator_timeout: 1500000000
     # state timeout: time in which the state should be updated
     timeouts/state_timeout: 0.1
+
 
 
 

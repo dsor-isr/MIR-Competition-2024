@@ -24,20 +24,20 @@ find_package (Eigen3 3.3 REQUIRED)
 include_directories(include)
  
 # define a library target called my_value_converter_library
-add_library(glassy_transforms src/glassy_transforms.cpp)
+add_library(GlassyGeneralUtils src/GlassyGeneralUtils.cpp)
  
 # this line to exports the library
-ament_export_targets(glassy_transforms HAS_LIBRARY_TARGET)
+ament_export_targets(GlassyGeneralUtils HAS_LIBRARY_TARGET)
  
 # install the include/my_cpp_library directory to the install/include/my_cpp_library
 install(
-  DIRECTORY include/transforms
+  DIRECTORY include/glassy_utils
   DESTINATION include
 )
  
 install(
-  TARGETS glassy_transforms
-  EXPORT glassy_transforms
+  TARGETS GlassyGeneralUtils
+  EXPORT GlassyGeneralUtils
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin

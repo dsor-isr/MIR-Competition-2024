@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'glassy_challenge = glassy_challenge.glassy_challenge:main',
+            'glassy_challenge_analysis = glassy_challenge.glassy_challenge_analysis:main'
         ],
     },
 )

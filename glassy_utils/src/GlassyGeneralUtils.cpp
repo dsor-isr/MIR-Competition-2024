@@ -1,4 +1,8 @@
-#include "transforms/glassy_transforms.h"
+/*
+Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Instituto Superior Tecnico) 
+*/
+
+#include "glassy_utils/GlassyGeneralUtils.h"
 
 
 // Angle conversions

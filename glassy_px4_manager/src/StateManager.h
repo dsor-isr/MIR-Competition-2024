@@ -29,7 +29,7 @@ Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Ins
 #include <glassy_msgs/msg/mission_info.hpp>
 #include <glassy_msgs/srv/set_mission.h>
 
-#include <transforms/glassy_transforms.h>
+#include <glassy_utils/GlassyGeneralUtils.h>
 
 #include "mission_types.h"
 
@@ -117,26 +117,58 @@ private:
     std::shared_ptr<VehicleTorqueSetpoint> torque_msg_;
 	std::shared_ptr<glassy_msgs::msg::MissionInfo> mission_info_msg_;
 
-	
 
 
-
-
-
+	/*
+		Parameters
+	*/
 	uint8_t mission_type_ = glassy_msgs::msg::MissionInfo::SUMMER_CHALLENGE;
 
-	rclcpp::Time last_time_received_actuators_;
+	// in nanoseconds
+	long int timeout_actuators_ = 1500000000;
 
+	// in nanoseconds
+	long int last_time_received_actuators_;
 
-
+	long int mission_timeout_ = 20000000000;
+	long int time_mission_start_ = 0;
 
 	// Actuator variables
 	float thrust_ = 0.0;
 	float rudder_ = 0.0;
 
+	float thrust_upper_limit_ = 1.0;
+
+	float rudder_max_abs_input_ = 1.0;
+
+	float thrust_trim_ = 0.0;
+	float rudder_trim_ = 0.0;
+
+	// simulatior or real vehicle settings
+	bool is_gazebo_simulator_ = true;
+
+
+	/*
+		Parameter changes Callbacks
+	*/
+	void mission_type_callback(const rclcpp::Parameter & p);
+	void mission_timeout_callback(const rclcpp::Parameter & p);
+	void thrust_upper_limit_callback(const rclcpp::Parameter & p);
+	void rudder_max_abs_input_callback(const rclcpp::Parameter & p);
+	void print_param_change_info(const rclcpp::Parameter & p);
+
+	// define callback handlers
+	std::shared_ptr<rclcpp::ParameterCallbackHandle> mission_type_callback_handler_;
+	std::shared_ptr<rclcpp::ParameterCallbackHandle> mission_timeout_callback_handler_;
+	std::shared_ptr<rclcpp::ParameterCallbackHandle> thrust_upper_limit_callback_handler_;
+	std::shared_ptr<rclcpp::ParameterCallbackHandle> rudder_max_abs_input_callback_handler_;
+
+	// define one param subscriber
+	std::shared_ptr<rclcpp::ParameterEventHandler> param_subscriber_;
 
 
 
+	// Vehicle status variables
     bool offboard_mode_=false;
     bool is_armed_=false;  
 	bool mission_is_on_=false;

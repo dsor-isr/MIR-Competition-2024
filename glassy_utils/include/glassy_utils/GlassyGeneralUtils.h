@@ -1,5 +1,9 @@
-#ifndef _GlassyTransforms_
-#define _GlassyTransforms_
+/*
+Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Instituto Superior Tecnico) 
+*/
+
+#ifndef _GlassyGeneralUtils_
+#define _GlassyGeneralUtils_
 
 #include <cmath>
 #include <eigen3/Eigen/Core>

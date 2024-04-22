@@ -9,7 +9,6 @@ import glassy_msgs.msg as glassy_msgs
 
 # allowed libraries
 import numpy as np
-import scipy as sp
 
 
 class GlassyChallenge(Node):
@@ -34,6 +33,17 @@ class GlassyChallenge(Node):
         self.initial_y = 0.0
 
         self.is_active = False
+
+        # used to calculate the score...
+        self.cross_track_distance = 0.0
+        self.velocity_above_max = 0.0
+        self.max_velocity = 2.0
+        self.total_dist_coef = 1.0
+        self.cross_dist_coef = 0.0001
+        self.vel_coef = 2.0
+        self.time_prev = 0.0
+        self.dx = 0.0
+        self.dy = 0.0
 
 
         #********************************************************************************
@@ -82,6 +92,18 @@ class GlassyChallenge(Node):
 
         self.x = msg.p_ned[0]
         self.y = msg.p_ned[1]
+
+        current_time = self.get_clock().now().nanoseconds/1e9
+
+        # calculate the integral of the cross track distance
+        self.cross_track_distance += np.abs(( np.cos(self.initial_yaw) * (self.initial_y-self.y) - np.sin(self.initial_yaw) * (self.initial_x - self.x))) * (current_time - self.time_prev)
+
+        # calculate the integral of the velocity above the max velocity
+        self.velocity_above_max += np.maximum(np.sqrt(self.surge**2 + self.sway**2) - self.max_velocity, 0) * (current_time - self.time_prev)
+
+
+        self.time_prev = current_time
+
         
 
 
@@ -96,15 +118,30 @@ class GlassyChallenge(Node):
                 self.timer_control_.cancel()
                 self.is_active = False
 
+                total_dist_squared = (self.initial_x - self.x)**2 + (self.initial_y - self.y)**2
+
+                self.get_logger().info('Mission ended')
+                self.get_logger().info('TOTAL DISTANCE: ' + str(np.sqrt(total_dist_squared)))
+                self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL: ' + str(self.cross_track_distance))
+                self.get_logger().info('VELOCITY OVER MAX INTEGRAL: ' + str(self.velocity_above_max))
+                self.get_logger().info('SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance**2 - self.vel_coef * self.velocity_above_max**2))
+
         else:
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
                 self.timer_control_.reset()
                 self.is_active = True
 
                 # reset the initial mission values
+                # HERE YOU CAN ADD SLIGHT OFFSETS TO THE INITIAL VALUES, TO MAKE THE CHALLENGE MORE INTERESTING/COMPLICATED, AND TEST YOUR CONTROLLER BETTER
+                # Ex: self.initial_yaw = self.initial_yaw + 0.1 (around 5º offset)
                 self.initial_x = self.x
                 self.initial_y = self.y
                 self.initial_yaw = self.yaw
+
+                # these are used for evaluation purposes
+                self.time_prev = self.get_clock().now().nanoseconds/1e9
+                self.cross_track_distance = 0.0
+                self.velocity_above_max = 0.0
         
 
 

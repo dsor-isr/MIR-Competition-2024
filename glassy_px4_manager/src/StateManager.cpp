@@ -1,7 +1,9 @@
-
 /*
 Developers: João Lehodey - joao.lehodey@tecnico.ulisboa.pt - DSOR/ISR team (Instituto Superior Tecnico) 
 */
+
+
+
 
 #include "StateManager.h"
 
@@ -17,6 +19,13 @@ StateManager::StateManager() : Node("glassy_state_manager")
     this->declare_parameter("rates/state_publishing", 50);
     this->declare_parameter("rates/actuator_publishing", 40);
     this->declare_parameter("rates/mission_info_publishing", 2);
+    this->declare_parameter("timeouts/actuator_timeout", 1500000000);
+    this->declare_parameter("timeouts/mission_timeout", 20000000000);
+    this->declare_parameter("thrust_upper_limit", 0.5);
+    this->declare_parameter("thrust_trim", 0.0);
+    this->declare_parameter("rudder_trim", 0.0);
+    this->declare_parameter("rudder_max_abs_input", 1.0);
+    this->declare_parameter("gazebo_simulation", true);
 
 
 
@@ -25,6 +34,24 @@ StateManager::StateManager() : Node("glassy_state_manager")
     int actuator_publishing_rate = this->get_parameter("rates/actuator_publishing").as_int();
     int mission_info_publishing_rate = this->get_parameter("rates/mission_info_publishing").as_int();
     int mission = this->get_parameter("mission_type").as_int();
+    timeout_actuators_ = this->get_parameter("timeouts/actuator_timeout").as_int();
+    mission_timeout_ = this->get_parameter("timeouts/mission_timeout").as_int();
+    thrust_trim_ = this->get_parameter("thrust_trim").as_double();
+    rudder_trim_ = this->get_parameter("rudder_trim").as_double();
+    thrust_upper_limit_ = this->get_parameter("thrust_upper_limit").as_double();
+    rudder_max_abs_input_ = this->get_parameter("rudder_max_abs_input").as_double();
+    is_gazebo_simulator_ = this->get_parameter("gazebo_simulation").as_bool();
+
+
+    // initialize parameter handlers
+    param_subscriber_ = std::make_shared<rclcpp::ParameterEventHandler>(this);
+
+    // define parameter callbacks
+    mission_type_callback_handler_ =param_subscriber_->add_parameter_callback("mission_type", std::bind(&StateManager::mission_type_callback, this, std::placeholders::_1));
+    mission_timeout_callback_handler_= param_subscriber_->add_parameter_callback("timeouts/mission_timeout", std::bind(&StateManager::mission_timeout_callback, this, std::placeholders::_1));
+    thrust_upper_limit_callback_handler_ = param_subscriber_->add_parameter_callback("thrust_upper_limit", std::bind(&StateManager::thrust_upper_limit_callback, this, std::placeholders::_1));
+    rudder_max_abs_input_callback_handler_ = param_subscriber_->add_parameter_callback("rudder_max_abs_input", std::bind(&StateManager::rudder_max_abs_input_callback, this, std::placeholders::_1));
+
 
     // check that the mission type is valid
 
@@ -71,6 +98,8 @@ StateManager::StateManager() : Node("glassy_state_manager")
 
     // define timers for state publishing and actuator publishing
     timer_actuator_publishing_ = this->create_wall_timer((1.0s/actuator_publishing_rate), std::bind(&StateManager::publish_offboard_actuator_signals, this));
+
+    timer_offboard_control_mode_publishing_ = this->create_wall_timer(1.0s/10, std::bind(&StateManager::publish_offboard_control_mode, this));
 
     timer_state_publishing_ = this->create_wall_timer((1.0s/state_publishing_rate), std::bind(&
     StateManager::publish_state_callback, this));
@@ -143,6 +172,7 @@ void StateManager::vehicle_odometry_callback(const VehicleOdometry::SharedPtr ms
 void StateManager::actuator_glassy_callback(const glassy_msgs::msg::Actuators::SharedPtr msg){
     thrust_ = msg->thrust;
     rudder_ = msg->rudder;
+    last_time_received_actuators_ = rclcpp::Time(msg->header.stamp).nanoseconds();
 }
 
 
@@ -159,13 +189,11 @@ void StateManager::vehicle_control_mode_callback(const VehicleControlMode::Share
     {
         // Initialize mission
         this->start_mission();
-        mission_is_on_ = true;
     }
     else if ((!offboard_mode_ || !is_armed_) && mission_is_on_)
     {
         // Stop mission
         this->stop_mission();
-        mission_is_on_ = false;
     } 
 };
 
@@ -179,12 +207,32 @@ void StateManager::disarm()
 	RCLCPP_INFO(this->get_logger(), "Disarm command send");
 }
 
+
 /**
  * @brief Publish the offboard control mode.
  *        We are always interested in torque and thrust setpoints in our case.
  */
 void StateManager::publish_offboard_control_mode()
 {
+    // get the current time
+    long int time_now = this->get_clock()->now().nanoseconds();
+
+    // check if the actuators have been received (done here due to the timer frequency)
+    if(mission_is_on_){
+        if(time_now - last_time_received_actuators_ > timeout_actuators_){
+            RCLCPP_WARN(this->get_logger(), "TIMEOUT -> No actuator inputs received for %f s, disarming", float(timeout_actuators_)/1e9);
+            thrust_ = 0.0;
+            rudder_ = 0.0;
+            this->disarm();
+        }
+        if(time_now - time_mission_start_ > mission_timeout_){
+            RCLCPP_INFO(this->get_logger(), "MISSION OVER BY TIMEOUT (%fs), disarming", double(mission_timeout_/1e9));
+            thrust_ = 0.0;
+            rudder_ = 0.0;
+            this->disarm();
+        }
+    }
+
     // This is always published, so the mission does not need to publish it.
 	OffboardControlMode msg{};
 	msg.position = false;
@@ -194,7 +242,7 @@ void StateManager::publish_offboard_control_mode()
 	msg.body_rate = false;
     msg.thrust_and_torque = true;
     msg.direct_actuator = false;
-	msg.timestamp = this->get_clock()->now().nanoseconds() / 1000;
+	msg.timestamp = time_now / 1000;
 	offboard_control_mode_publisher_->publish(msg);
 }
 
@@ -227,7 +275,13 @@ void StateManager::publish_vehicle_command(uint16_t command, float param1, float
  * 
  */
 void StateManager::start_mission(){
+    last_time_received_actuators_ = this->get_clock()->now().nanoseconds();
+    time_mission_start_ = last_time_received_actuators_;
+
     mission_info_msg_->mission_mode = mission_type_;
+    mission_is_on_ = true;
+
+    
 }
 
 /**
@@ -236,6 +290,7 @@ void StateManager::start_mission(){
  */
 void StateManager::stop_mission(){
     mission_info_msg_->mission_mode = glassy_msgs::msg::MissionInfo::MISSION_OFF;
+    mission_is_on_ = false;
 }
 
 
@@ -251,27 +306,47 @@ void StateManager::stop_mission(){
  */
 void StateManager::publish_offboard_actuator_signals()
 {   
-    
-    if(!mission_is_on_){
-        thrust_ = 0.0;
-        rudder_ = 0.0;
+    float thrust = 0.0;
+    float rudder = 0.0;
+
+    // get the current time
+    long int time_now = this->get_clock()->now().nanoseconds();
+
+
+    // check if the actuators have been received 
+    if(mission_is_on_){
+        if(is_gazebo_simulator_){
+            // to get a linear relationship
+            thrust = sqrt(thrust_) + thrust_trim_;
+        }
+        else{
+            thrust = thrust_ + thrust_trim_;
+        }
+        rudder = rudder_ + rudder_trim_;
+    } 
+    // if mission not on, send 0 thrust and rudder
+    else{
+        thrust = 0.0;
+        rudder = 0.0;
     }
-    // in case of offboard mode and armed, do not publish, as the vehicle will be controlled by the mission.
-    publish_offboard_control_mode();
+
+    thrust = std::max(std::min(thrust, thrust_upper_limit_), 0.f);
+    rudder = std::max(std::min(rudder, rudder_max_abs_input_), -rudder_max_abs_input_);
+
 
     // create and populate the thrust and torque setpoint messages
-    thrust_msg_->xyz[0] = thrust_;
+    thrust_msg_->xyz[0] = thrust;
     thrust_msg_->xyz[1] = 0.0;
     thrust_msg_->xyz[2] = 0.0;
     torque_msg_->xyz[0] = 0.0;
     torque_msg_->xyz[1] = 0.0;
-    torque_msg_->xyz[2] = rudder_;
+    torque_msg_->xyz[2] = rudder;
 
-	thrust_msg_->timestamp_sample = this->get_clock()->now().nanoseconds() / 1000;
-	torque_msg_->timestamp_sample = this->get_clock()->now().nanoseconds() / 1000;
+	thrust_msg_->timestamp_sample = time_now / 1000;
+	torque_msg_->timestamp_sample = thrust_msg_->timestamp_sample;
 
-    thrust_msg_->timestamp = this->get_clock()->now().nanoseconds() / 1000;
-    torque_msg_->timestamp = this->get_clock()->now().nanoseconds() / 1000;
+    thrust_msg_->timestamp = thrust_msg_->timestamp_sample;
+    torque_msg_->timestamp = thrust_msg_->timestamp_sample;
 
     // publish the messages
     thrust_setpoint_publisher_->publish(*thrust_msg_);
@@ -290,4 +365,80 @@ void StateManager::publish_state_callback(){
  */
 void StateManager::publish_mission_info(){
     mission_info_publisher_->publish(*mission_info_msg_);
+}
+
+
+
+/*----------------------------------*
+*                                   *
+*   PARAMETER CHANGES CALLBACKS     *
+*                                   *
+------------------------------------*/
+
+/**
+ * @brief Callback for the mission type parameter change
+ * @param param 
+ */
+void StateManager::mission_type_callback(const rclcpp::Parameter & p){
+    print_param_change_info(p);
+    try{
+        int mission = p.as_int();
+        if(std::find(MissionTypes.begin(), MissionTypes.end(), mission) != MissionTypes.end()){
+            mission_type_ = mission;
+        } else{
+            RCLCPP_ERROR(this->get_logger(), "Invalid mission type, not changing");
+        }
+    } catch (const std::exception& e){
+        RCLCPP_ERROR(this->get_logger(), "Error converting parameter to int: %s", e.what());
+    }
+    RCLCPP_INFO(this->get_logger(), "Mission Type: %s", MissionNames[mission_type_].c_str());
+}
+
+/**
+ * @brief Callback for the mission timeout parameter change
+ * @param param 
+ */
+void StateManager::mission_timeout_callback(const rclcpp::Parameter & p){
+    print_param_change_info(p);
+    try{
+        mission_timeout_ = p.as_int();
+    } catch (const std::exception& e){
+        RCLCPP_ERROR(this->get_logger(), "Error converting parameter to int: %s", e.what());
+    }
+}
+
+/**
+ * @brief Callback for the thrust upper limit parameter change
+ * @param param 
+ */
+void StateManager::thrust_upper_limit_callback(const rclcpp::Parameter & p){
+    print_param_change_info(p);
+    try{
+        thrust_upper_limit_ = p.as_double();
+    } catch (const std::exception& e){
+        RCLCPP_ERROR(this->get_logger(), "Error converting parameter to double: %s", e.what());
+    }
+}
+
+/**
+ * @brief Callback for the rudder max abs input parameter change
+ * @param param 
+ */
+void StateManager::rudder_max_abs_input_callback(const rclcpp::Parameter & p){
+    print_param_change_info(p);
+    try{
+        rudder_max_abs_input_ = p.as_double();
+    } catch (const std::exception& e){
+        RCLCPP_ERROR(this->get_logger(), "Error converting parameter to double: %s", e.what());
+    }    
+}
+
+
+/**
+ * @brief Print information when receiving a parameter change
+ * @param param pointer
+*/
+void StateManager::print_param_change_info(const rclcpp::Parameter & p){
+    RCLCPP_INFO(this->get_logger(), "Received an update to parameter \"%s\" of type %s", p.get_name().c_str(), p.get_type_name().c_str());
+    RCLCPP_INFO(this->get_logger(), "New value: %s", p.value_to_string().c_str());
 }
