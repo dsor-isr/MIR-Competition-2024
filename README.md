@@ -127,12 +127,22 @@ Ensure everything is working by running starting the agent and checking for any 
   ```console
   git clone https://github.com/PX4/px4_msgs.git
   ```
+
+* Install the Eigen c++ library:
+  ```console
+  sudo apt install libeigen3-dev
+  ```    
   
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
   echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc 
   echo  'source ~/MIR_Project_2024/glassy_challenge_ws/install/setup.bash' >> ~/.bashrc 
   ```
+* Update the scipy python package:
+    ```console
+  pip install scipy --upgrade
+  ```
+
 * **Restart your computer**
     ```console
   reboot
