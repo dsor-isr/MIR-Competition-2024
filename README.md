@@ -227,7 +227,9 @@ To do both of the above you need to use QgroundControl:
 ![Turn_virtual_joystick_on](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/712050cf-608b-4dc6-81f6-9840072d41cd)
 
 ### Additionally, some of the following tools may be usefull to help you:
-* Plotjuggler: https://github.com/facontidavide/PlotJuggler
+* Plotjuggler: https://github.com/facontidavide/PlotJuggler (***Highly Recomended For Plotting and Debugging***)
+  - Install using: sudo apt install ros-humble-plotjuggler-ros
+  - Run using: ros2 run plotjuggler plotjuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
 ### If you want to know more about the software ecosystem used:
