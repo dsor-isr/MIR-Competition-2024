@@ -247,7 +247,4 @@ To do both of the above you need to use QgroundControl:
 
 
 ## In case you have any questions:
--- insert here contacts, ...
--- relatively new system, some bugs may occur, do not hesitate to contact us
-
-## 
+If you think there is a bug, or something is not clear enough, post an issue on github, this way everybody can see it and benefit from it. 
