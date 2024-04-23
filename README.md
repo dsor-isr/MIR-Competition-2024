@@ -35,6 +35,9 @@ In a terminal, run:
 ```console
 curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
 ```
+
+* **Restart your computer**
+
 ### Option 2: Step-by-step instructions:
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
