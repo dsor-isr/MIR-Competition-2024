@@ -127,12 +127,22 @@ Ensure everything is working by running starting the agent and checking for any 
   ```console
   git clone https://github.com/PX4/px4_msgs.git
   ```
+
+* Install the Eigen c++ library:
+  ```console
+  sudo apt install libeigen3-dev
+  ```    
   
 * Alter the .bashrc to source both ros2 and the ros2 workspace. This can be done by running the following commands.
   ```console
   echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc 
   echo  'source ~/MIR_Project_2024/glassy_challenge_ws/install/setup.bash' >> ~/.bashrc 
   ```
+* Update the scipy python package:
+    ```console
+  pip install scipy --upgrade
+  ```
+
 * **Restart your computer**
     ```console
   reboot
@@ -226,8 +236,12 @@ To do both of the above you need to use QgroundControl:
 
 ![Turn_virtual_joystick_on](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/712050cf-608b-4dc6-81f6-9840072d41cd)
 
+**Finally, the information about the controller you need to design and the model of the vehicle can be found in the CHALLENGE.pdf file.**
+
 ### Additionally, some of the following tools may be usefull to help you:
-* Plotjuggler: https://github.com/facontidavide/PlotJuggler
+* Plotjuggler: https://github.com/facontidavide/PlotJuggler (***Highly Recomended For Plotting and Debugging***)
+  - Install using: sudo apt install ros-humble-plotjuggler-ros
+  - Run using: ros2 run plotjuggler plotjuggler
 * Terminator: https://gnome-terminator.readthedocs.io/en/latest/ (***Highly Recomended***)
 
 ### If you want to know more about the software ecosystem used:
@@ -235,7 +249,4 @@ To do both of the above you need to use QgroundControl:
 
 
 ## In case you have any questions:
--- insert here contacts, ...
--- relatively new system, some bugs may occur, do not hesitate to contact us
-
-## 
+If you think there is a bug or something is not clear enough, post an issue on github, this way everybody can see it and benefit from it. 
