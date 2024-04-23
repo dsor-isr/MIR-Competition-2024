@@ -246,6 +246,7 @@ To do both of the above you need to use QgroundControl:
   cd ~/MIR_Project_2024/PX4-Autopilot
  HEADLESS=1 make px4_sitl gazebo-classic_glassy
   ```
+In headless mode, you will not be able to see the simulation but everything else should work in the same way. You can use QgroundControl to keep track of what the vehicle is doing.
 
 **Finally, the information about the controller you need to design and the model of the vehicle can be found in the CHALLENGE.pdf file.**
 
