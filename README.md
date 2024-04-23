@@ -240,6 +240,13 @@ To do both of the above you need to use QgroundControl:
 
 ![How to turn on the virtual joystick](https://github.com/dsor-isr/MIR-Competition-2024/assets/69345264/03e90571-a71f-4477-ac13-cc44cc8f538e)
 
+***IMPORTANT:*** Please note that the Gazebo simulator is running without lockstep, this means that if it is not running smoothly there will be problems. Therefore, you should ensure that if you have a GPU, it is activated (activate the specific drivers on Ubuntu). If by any chance you still encounter problems, consider running the simulation in HEADLESS mode (no GUI). This can be done by using the following command to start the simulation (instead of the one shown above):
+
+  ```console
+  cd ~/MIR_Project_2024/PX4-Autopilot
+ HEADLESS=1 make px4_sitl gazebo-classic_glassy
+  ```
+
 **Finally, the information about the controller you need to design and the model of the vehicle can be found in the CHALLENGE.pdf file.**
 
 ### Additionally, some of the following tools may be usefull to help you:
