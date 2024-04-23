@@ -247,6 +247,7 @@ To do both of the above you need to use QgroundControl:
 
 ### If you want to know more about the software ecosystem used:
 * PX4 website: https://docs.px4.io/main/en/
+* ROS 2 website: https://docs.ros.org/en/humble/index.html
 
 
 ## In case you have any questions:
