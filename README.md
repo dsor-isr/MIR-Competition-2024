@@ -122,7 +122,7 @@ Ensure everything is working by running starting the agent and checking for any 
   ```
 * Clone the challenge code:
   ```console
-  git clone https://github.com/joaolehodey/summer_challenge_IST_DSOR.git .
+  git clone git@github.com:dsor-isr/MIR-Competition-2024.git .
   ```
 * Clone the px4_msgs ros2 package:
   ```console
