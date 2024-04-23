@@ -96,10 +96,10 @@ class GlassyChallenge(Node):
         current_time = self.get_clock().now().nanoseconds/1e9
 
         # calculate the integral of the cross track distance
-        self.cross_track_distance += np.abs(( np.cos(self.initial_yaw) * (self.initial_y-self.y) - np.sin(self.initial_yaw) * (self.initial_x - self.x))) * (current_time - self.time_prev)
+        self.cross_track_distance += np.abs(( np.cos(self.initial_yaw) * (self.initial_y-self.y) - np.sin(self.initial_yaw) * (self.initial_x - self.x)))**2 * (current_time - self.time_prev)
 
         # calculate the integral of the velocity above the max velocity
-        self.velocity_above_max += np.maximum(np.sqrt(self.surge**2 + self.sway**2) - self.max_velocity, 0) * (current_time - self.time_prev)
+        self.velocity_above_max += np.maximum(np.sqrt(self.surge**2 + self.sway**2) - self.max_velocity, 0)**2 * (current_time - self.time_prev)
 
 
         self.time_prev = current_time
@@ -122,9 +122,10 @@ class GlassyChallenge(Node):
 
                 self.get_logger().info('Mission ended')
                 self.get_logger().info('TOTAL DISTANCE: ' + str(np.sqrt(total_dist_squared)))
-                self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL: ' + str(self.cross_track_distance))
-                self.get_logger().info('VELOCITY OVER MAX INTEGRAL: ' + str(self.velocity_above_max))
-                self.get_logger().info('SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance**2 - self.vel_coef * self.velocity_above_max**2))
+                self.get_logger().info('TOTAL DISTANCE SCORE: ' + str(total_dist_squared * self.total_dist_coef))
+                self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL SCORE: ' + str(- self.cross_dist_coef * self.cross_track_distance))
+                self.get_logger().info('VELOCITY OVER MAX INTEGRAL SCORE: ' + str(- self.vel_coef * self.velocity_above_max))
+                self.get_logger().info('SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
 
         else:
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
