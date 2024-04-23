@@ -14,7 +14,7 @@ The "MIR_Project_2024" folder, constains 4 different directories with the follow
 * glassy_challenge_ws: This folder contains software developed to communicate, monitor and activate missions. Is is structured following the usual ROS2 structure. In this case, the mission that will be activated is the challenge mission, where your own controller will run.
 
 For the challenge, the only file that needs to be changed is "glassy_challenge.py".
-The file CHALLENGE.pdf contains information about the vehicle you will use, its model and the objectives to be met by your controller.
+The file CHALLENGE.pdf contains information about the vehicle you will use, its model and the challenge objectives.
 
 ( ENSURE YOU HAVE A GOOD WIFI CONNECTION DURING THE INSTALLATION, THE FULL SETUP SHOULD TAKE AT LEAST 30 MIN )
 
