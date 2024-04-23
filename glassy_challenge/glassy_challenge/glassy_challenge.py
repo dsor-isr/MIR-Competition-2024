@@ -126,7 +126,7 @@ class GlassyChallenge(Node):
                 self.get_logger().info('TOTAL DISTANCE SCORE: ' + str(total_dist_squared * self.total_dist_coef))
                 self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL SCORE: ' + str(- self.cross_dist_coef * self.cross_track_distance))
                 self.get_logger().info('VELOCITY OVER MAX INTEGRAL SCORE: ' + str(- self.vel_coef * self.velocity_above_max))
-                self.get_logger().info('SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
+                self.get_logger().info('TOTAL SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
 
         else:
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
