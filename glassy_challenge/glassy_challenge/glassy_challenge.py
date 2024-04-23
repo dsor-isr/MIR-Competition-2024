@@ -94,12 +94,13 @@ class GlassyChallenge(Node):
         self.y = msg.p_ned[1]
 
         current_time = self.get_clock().now().nanoseconds/1e9
+        dt = (current_time - self.time_prev)
 
         # calculate the integral of the cross track distance
-        self.cross_track_distance += np.abs(( np.cos(self.initial_yaw) * (self.initial_y-self.y) - np.sin(self.initial_yaw) * (self.initial_x - self.x)))**2 * (current_time - self.time_prev)
+        self.cross_track_distance += np.abs(( np.cos(self.initial_yaw) * (self.initial_y-self.y) - np.sin(self.initial_yaw) * (self.initial_x - self.x)))**2 * dt
 
         # calculate the integral of the velocity above the max velocity
-        self.velocity_above_max += np.maximum(np.sqrt(self.surge**2 + self.sway**2) - self.max_velocity, 0)**2 * (current_time - self.time_prev)
+        self.velocity_above_max += np.maximum(np.sqrt(self.surge**2 + self.sway**2) - self.max_velocity, 0)**2 * dt
 
 
         self.time_prev = current_time
