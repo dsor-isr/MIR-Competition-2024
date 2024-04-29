@@ -119,14 +119,17 @@ class GlassyChallenge(Node):
                 self.timer_control_.cancel()
                 self.is_active = False
 
-                total_dist_squared = (self.initial_x - self.x)**2 + (self.initial_y - self.y)**2
+
+                get_projection_on_line = np.dot([self.x - self.initial_x, self.y - self.initial_y], [np.cos(self.initial_yaw), np.sin(self.initial_yaw)])
+                total_dist_along_squared = get_projection_on_line**2
+
 
                 self.get_logger().info('Mission ended')
-                self.get_logger().info('TOTAL DISTANCE: ' + str(np.sqrt(total_dist_squared)))
-                self.get_logger().info('TOTAL DISTANCE SCORE: ' + str(total_dist_squared * self.total_dist_coef))
+                self.get_logger().info('ALONG TRACK DISTANCE: ' + str(get_projection_on_line))
+                self.get_logger().info('ALONG TRACK DISTANCE SCORE: ' + str(total_dist_along_squared * self.total_dist_coef))
                 self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL SCORE: ' + str(- self.cross_dist_coef * self.cross_track_distance))
                 self.get_logger().info('VELOCITY OVER MAX INTEGRAL SCORE: ' + str(- self.vel_coef * self.velocity_above_max))
-                self.get_logger().info('TOTAL SCORE: ' + str(total_dist_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
+                self.get_logger().info('TOTAL SCORE: ' + str(total_dist_along_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
 
         else:
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
