@@ -35,6 +35,9 @@ In a terminal, run:
 ```console
 curl -L https://raw.githubusercontent.com/joaolehodey/MIR-Competition-2024_instalation_script/main/challenge.bash | bash
 ```
+
+* **Restart your computer**
+
 ### Option 2: Step-by-step instructions:
 #### System requirements:
 Please ensure you have Ubuntu 22.04 installed on your machine. We **highly** recommend a native instalation (https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview), altough you may also install Ubuntu 22.04 on a Virtual Machine (VMware, Virtualbox, etc.).
@@ -122,7 +125,7 @@ Ensure everything is working by running starting the agent and checking for any 
   ```
 * Clone the challenge code:
   ```console
-  git clone https://github.com/joaolehodey/summer_challenge_IST_DSOR.git .
+  git clone https://github.com/dsor-isr/MIR-Competition-2024.git .
   ```
 * Clone the px4_msgs ros2 package:
   ```console
@@ -230,12 +233,20 @@ Simillarly to the above, this can keep running in the background.
 Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode **AND** Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer). The first time you do this (before you write any code), you should see the vehicle moving forward in zigzags (constant thrust and sinusoidal rudder input).
 
 To do both of the above you need to use QgroundControl:
-![Your How to Chnage Mode tutorial](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/f5825b22-a799-4b22-8411-90815c7c9de1)
-![Your How to Arm text](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/29a88eb8-36bf-465c-a6cd-9142a097353c)
+![How to change mode](https://github.com/dsor-isr/MIR-Competition-2024/assets/69345264/6357c89d-bf16-470f-a0ae-78183ee1a8be)
+![Your How to Arm tut](https://github.com/dsor-isr/MIR-Competition-2024/assets/69345264/eb93007b-6c31-44c3-b1a6-c2ede86908d0)
 
 ***IMPORTANT:*** Please note that this simulation is very similar to the real system, including the failsafes. Failsafes are a set of conditions that allow the arming of the vehicle. These ensure the vehicle is not armed if there are sensor failures, no access to manual control, etc. Given the above, it is important that you have a source of manual inputs to act as your manual control, otherwise you will not be able to arm the vehicle. If you have a joystick (PS4 controller, ...) , plug it into your machine, it should be detected by QGroundControl, and will allow the arming of the vehicle. You may also drive the vehicle around by entering Manual Mode (check the change mode tutorial above). If you do not have a joystick around, you may activate the QGroundControl virtual joystick ( it does not really allow proper manual control, but is usefull to allow the arming of the vehicle for developement purposes). To activate the Qgroundcontrol virtual joystick:
 
-![Turn_virtual_joystick_on](https://github.com/joaolehodey/MIR-Competition-2024/assets/69345264/712050cf-608b-4dc6-81f6-9840072d41cd)
+![How to turn on the virtual joystick](https://github.com/dsor-isr/MIR-Competition-2024/assets/69345264/03e90571-a71f-4477-ac13-cc44cc8f538e)
+
+***IMPORTANT:*** Please note that the Gazebo simulator is running without lockstep, this means that if it is not running smoothly there will be problems. Therefore, you should ensure that if you have a GPU, it is activated (activate the specific drivers on Ubuntu). If by any chance you still encounter problems, consider running the simulation in HEADLESS mode (no GUI). This can be done by using the following command to start the simulation (instead of the one shown above):
+
+  ```console
+  cd ~/MIR_Project_2024/PX4-Autopilot
+ HEADLESS=1 make px4_sitl gazebo-classic_glassy
+  ```
+In headless mode, you will not be able to see the simulation but everything else should work in the same way. You can use QgroundControl to keep track of what the vehicle is doing.
 
 **Finally, the information about the controller you need to design and the model of the vehicle can be found in the CHALLENGE.pdf file.**
 
