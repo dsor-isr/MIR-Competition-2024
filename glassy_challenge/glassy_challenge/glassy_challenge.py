@@ -34,16 +34,19 @@ class GlassyChallenge(Node):
 
         self.is_active = False
 
-        # used to calculate the score...
+        # used to calculate the score... ( you may test different coeficients to see how they affect the score, and different max_speeds)
+
+        self.max_velocity = 3.0
+        self.total_dist_coef = 1.0
+        self.cross_dist_coef = 0.001
+        self.vel_coef = 2.0
+
+
+        #auxiliary variables
+        self.time_prev = 0.0
         self.cross_track_distance = 0.0
         self.velocity_above_max = 0.0
-        self.max_velocity = 2.0
-        self.total_dist_coef = 1.0
-        self.cross_dist_coef = 0.0001
-        self.vel_coef = 2.0
-        self.time_prev = 0.0
-        self.dx = 0.0
-        self.dy = 0.0
+
 
 
         #********************************************************************************
@@ -121,15 +124,16 @@ class GlassyChallenge(Node):
 
 
                 get_projection_on_line = np.dot([self.x - self.initial_x, self.y - self.initial_y], [np.cos(self.initial_yaw), np.sin(self.initial_yaw)])
-                total_dist_along_squared = get_projection_on_line**2
 
 
                 self.get_logger().info('Mission ended')
-                self.get_logger().info('ALONG TRACK DISTANCE: ' + str(get_projection_on_line))
-                self.get_logger().info('ALONG TRACK DISTANCE SCORE: ' + str(total_dist_along_squared * self.total_dist_coef))
+                self.get_logger().info('ALONG TRACK DISTANCE (larger is better): ' + str(get_projection_on_line))
+                self.get_logger().info('CROSS TRACK DISTANCE SQUARED INTEGRAL (lower is better): ' + str(self.cross_track_distance))
+                self.get_logger().info('VELOCITY OVER MAX SQUARED INTEGRAL (lower is better): ' + str(self.velocity_above_max))
+                self.get_logger().info('ALONG TRACK DISTANCE SCORE: ' + str(get_projection_on_line * self.total_dist_coef))
                 self.get_logger().info('CROSS TRACK DISTANCE INTEGRAL SCORE: ' + str(- self.cross_dist_coef * self.cross_track_distance))
                 self.get_logger().info('VELOCITY OVER MAX INTEGRAL SCORE: ' + str(- self.vel_coef * self.velocity_above_max))
-                self.get_logger().info('TOTAL SCORE: ' + str(total_dist_along_squared * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
+                self.get_logger().info('TOTAL SCORE: ' + str(get_projection_on_line * self.total_dist_coef - self.cross_dist_coef * self.cross_track_distance - self.vel_coef * self.velocity_above_max))
 
         else:
             if msg.mission_mode == glassy_msgs.MissionInfo.SUMMER_CHALLENGE:
