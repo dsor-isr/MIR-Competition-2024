@@ -260,19 +260,6 @@ In headless mode, you will not be able to see the simulation but everything else
 * PX4 website: https://docs.px4.io/main/en/
 * ROS 2 website: https://docs.ros.org/en/humble/index.html
 
-### Since you are working with Python and without new packages:
-* Due to working with python, and with already created packages, you can 'avoid' the building step by using the '--symlink-install flag'. This is not the case for C++.
-  Therefore, if you want to remove the building step you should:
-    ```console
-  cd ~/MIR_Project_2024/glassy_challenge_ws
-  rm -r /build /log /install # you must remove any previous build that did not use symlink install
-  colcon build --symlink-install
-  ```
-* Now everytime you want to test new code you can just run it:
-  ```console
-  cd ~/MIR_Project_2024/glassy_challenge_ws
-  ros2 run glassy_challenge glassy_challenge  # this runs your code
-  ```
 
 ## In case you have any questions:
 If you think there is a bug or something is not clear enough, post an issue on github, this way everybody can see it and benefit from it (https://github.com/dsor-isr/MIR-Competition-2024/issues). 
