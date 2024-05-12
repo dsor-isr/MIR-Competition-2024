@@ -228,6 +228,7 @@ Simillarly to the above, this can keep running in the background.
   colcon build --packages-select glassy_challenge #this builds your code
   ros2 run glassy_challenge glassy_challenge  # this runs your code
   ```
+* Since you are working with python, building you code may not be necessary (as oposed to when using C++). You may want to look into 
 
 
 Your code is running, however nothing is happening, this is because you need to start the mission, to start the mission, you must enter Offboard mode **AND** Arm the vehicle. Arming corresponds in a way to turn on the motors (allowing them to spin). Offboard mode is an internal PX4 mode, where PX4 allows an outside source to publish commands (in our case it is an onboard computer). The first time you do this (before you write any code), you should see the vehicle moving forward in zigzags (constant thrust and sinusoidal rudder input).
@@ -262,4 +263,4 @@ In headless mode, you will not be able to see the simulation but everything else
 
 
 ## In case you have any questions:
-If you think there is a bug or something is not clear enough, post an issue on github, this way everybody can see it and benefit from it. 
+If you think there is a bug or something is not clear enough, post an issue on github, this way everybody can see it and benefit from it (https://github.com/dsor-isr/MIR-Competition-2024/issues). 
