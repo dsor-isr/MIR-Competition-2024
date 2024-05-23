@@ -154,7 +154,9 @@ Ensure everything is working by running starting the agent and checking for any 
 # Troubleshooting:
 ### The instalation was tested on a clean Ubuntu 22.04 LTS system, your system may differ, in this section a few common errors and solutions provided my other members are present:
 
-#### Case: __AttributeError: module 'em' has no attribute 'RAW_OPT'__ when running __make px4_sitl gazebo-classic_glassy__:
+----------
+
+### Case: __AttributeError: module 'em' has no attribute 'RAW_OPT'__ when running __make px4_sitl gazebo-classic_glassy__:
   
  **Solution** - install an old version of empy by doing the following:
   
@@ -165,7 +167,9 @@ Ensure everything is working by running starting the agent and checking for any 
 
   (Thank you [@DavidMicheal](https://www.github.com/DavidMicheal))
 
-#### Case: Problems installing the uXRCE-DDS agent locally:
+----------
+
+### Case: Problems installing the uXRCE-DDS agent locally:
   
 **Solution** - you may try to install it by doing:
   
@@ -185,9 +189,10 @@ instead of:
 MicroXRCEAgent udp4 -p 8888
 ```
 
-
-
   (Thank you [@DavidMicheal](https://www.github.com/DavidMicheal))
+
+
+------------
 
  # The instalation is now complete, lets put the whole system working for the first time:
 * Open a new terminal and compile the ROS2 workspace:
